@@ -1,0 +1,10 @@
+author: xGhOsTkiLLeRx
+description: Temporary GodMode
+main: de.dustplanet.immortallogin.ImmortalLogin
+name: ImmortalLogin
+version: 1.1
+commands:
+    immortallogin:
+        description: Removes GodMode
+        usage: /im
+        aliases: [im, immortal]
