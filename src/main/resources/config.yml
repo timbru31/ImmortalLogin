@@ -1,0 +1,4 @@
+disableUpdater: false
+first-login:
+  hits: 20
+  seconds: 1200

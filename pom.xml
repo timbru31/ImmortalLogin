@@ -3,15 +3,21 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.dustplanet</groupId>
   <artifactId>ImmortalLogin</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>SuperWheat</name>
-  <description>Wheat re-grows automatically</description>
-  <url>http://dev.bukkit.org/bukkit-plugins/superwheat/</url>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>ImmortalLogin</name>
+  <description>A temporary god mode for new players</description>
+  <url>https://www.spigotmc.org/resources/</url>
 
   <!-- Encode in UTF-8 -->
   <properties>
+    <build.number>-b${BUILD_NUMBER}</build.number>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <!-- Require Maven 3 at least -->
+  <prerequisites>
+    <maven>3.0</maven>
+  </prerequisites>
 
   <!-- Repositories -->
   <repositories>
@@ -39,6 +45,11 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20160212</version>
+    </dependency>
   </dependencies>
 
  <build>
@@ -58,6 +69,32 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>com.github.wvengen</groupId>
+        <artifactId>proguard-maven-plugin</artifactId>
+        <version>2.0.12</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>proguard</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <obfuscate>true</obfuscate>
+          <options>
+            <option>-dontshrink</option>
+            <option>-keepattributes *Annotation*</option>
+            <option>-keep class
+              de.dustplanet.immortallogin.ImmortalLogin</option>
+          </options>
+          <libs>
+            <lib>${java.home}/lib/rt.jar</lib>
+          </libs>
+        </configuration>
+      </plugin>
+
       <!-- Shade Plugin to include Metrics -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -73,14 +110,15 @@
               <artifactSet>
                 <includes>
                   <include>org.mcstats.bukkit:metrics</include>
+                  <include>org.json:json</include>
                 </includes>
               </artifactSet>
               <!-- Set the final name -->
-              <finalName>SilkSpawnersEcoAddon</finalName>
+              <finalName>ImmortalLogin</finalName>
               <relocations>
                 <relocation>
                   <pattern>org.mcstats</pattern>
-                  <shadedPattern>de.dustplanet.silkspawnersecoaddon</shadedPattern>
+                  <shadedPattern>de.dustplanet.immortallogin</shadedPattern>
                 </relocation>
               </relocations>
             </configuration>
@@ -112,6 +150,7 @@
         <directory>${basedir}</directory>
         <includes>
           <include>README.md</include>
+          <include>LICENSE.md</include>
         </includes>
       </resource>
     </resources>

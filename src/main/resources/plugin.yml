@@ -1,10 +1,10 @@
-author: xGhOsTkiLLeRx
-description: Temporary GodMode
-main: de.dustplanet.immortallogin.ImmortalLogin
 name: ImmortalLogin
-version: 1.1
+author: xGhOsTkiLLeRx
+description: Temporary god mode for new players
+main: de.dustplanet.immortallogin.ImmortalLogin
+version: ${project.version}${build.number}
 commands:
-    immortallogin:
-        description: Removes GodMode
-        usage: /im
-        aliases: [im, immortal]
+  immortallogin:
+    description: Removes GodMode
+      usage: /im
+      aliases: [im, immortal]
