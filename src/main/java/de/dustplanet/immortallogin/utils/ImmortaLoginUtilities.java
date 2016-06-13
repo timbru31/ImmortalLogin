@@ -87,6 +87,7 @@ public class ImmortaLoginUtilities {
         config.addDefault("disableUpdater", false);
         config.addDefault("first-login.hits", 20);
         config.addDefault("first-login.seconds", 1200);
+        config.addDefault("nickColor", "DARK_PURPLE");
         config.options().copyDefaults(true);
         plugin.saveConfig();
 

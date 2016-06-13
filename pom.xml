@@ -25,6 +25,10 @@
       <id>spigotmc-repo</id>
       <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
     </repository>
+    <repository>
+      <id>inventive-repo</id>
+      <url>https://repo.inventivetalent.org/content/groups/public/ </url>
+    </repository>
   </repositories>
 
   <!-- Dependencies -->
@@ -49,6 +53,11 @@
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20160212</version>
+    </dependency>
+    <dependency>
+      <groupId>org.inventivetalent.nicknamer</groupId>
+      <artifactId>api</artifactId>
+      <version>3.10.0</version>
     </dependency>
   </dependencies>
 

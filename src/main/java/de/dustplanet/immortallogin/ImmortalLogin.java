@@ -9,11 +9,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.inventivetalent.nicknamer.api.NickManager;
+import org.inventivetalent.nicknamer.api.NickNamerAPI;
 
 import de.dustplanet.immortallogin.commands.ImmortalLoginCommands;
 import de.dustplanet.immortallogin.listeners.ImmortalLoginListener;
 import de.dustplanet.immortallogin.utils.ImmortaLoginUtilities;
 import de.dustplanet.immortallogin.utils.ScalarYamlConfiguration;
+import net.md_5.bungee.api.ChatColor;
 
 public class ImmortalLogin extends JavaPlugin {
     private ArrayList<UUID> gods = new ArrayList<>();
@@ -23,6 +26,7 @@ public class ImmortalLogin extends JavaPlugin {
     private FileConfiguration localization;
     private File configFile, localizationFile;
     private ImmortaLoginUtilities utilities = new ImmortaLoginUtilities(this);
+    private  NickManager nickManager;
 
     @Override
     public void onDisable() {
@@ -71,6 +75,14 @@ public class ImmortalLogin extends JavaPlugin {
 
         getCommand("immortallogin").setExecutor(new ImmortalLoginCommands(this, utilities));
 
+        if (getServer().getPluginManager().getPlugin("NickNamer") != null) {
+            try {
+                setNickManager(NickNamerAPI.getNickManager());
+            } catch (Exception e) {
+                getLogger().severe("Unable to load NickNamer!");
+            }
+        }
+
     }
 
     public void setGod(final Player player) {
@@ -78,7 +90,12 @@ public class ImmortalLogin extends JavaPlugin {
         getGods().add(player.getUniqueId());
         addTimer(player);
 
+        if (getNickManager() != null) {
+            getNickManager().setNick(player.getUniqueId(), ChatColor.valueOf(getConfig().getString("nickColor", "DARK_PURPLE")) + player.getName());
+            getNickManager().setSkin(player.getUniqueId(), player.getName());
+        }
         final ImmortaLoginUtilities utilz = utilities;
+        final NickManager _nickManager = getNickManager();
         getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
             @Override
             public void run() {
@@ -87,6 +104,10 @@ public class ImmortalLogin extends JavaPlugin {
                     getGods().remove(player.getUniqueId());
                     getServer().getScheduler().cancelTask(getTaskIDs().get(player.getUniqueId()));
                     getTaskIDs().remove(player.getUniqueId());
+                    if (_nickManager != null) {
+                        _nickManager.removeNick(player.getUniqueId());
+                        _nickManager.removeSkin(player.getUniqueId());
+                    }
                 }
             }
         }, getSeconds() * 20);
@@ -163,5 +184,13 @@ public class ImmortalLogin extends JavaPlugin {
 
     public void setLocalization(FileConfiguration localization) {
         this.localization = localization;
+    }
+
+    public NickManager getNickManager() {
+        return nickManager;
+    }
+
+    public void setNickManager(NickManager nickManager) {
+        this.nickManager = nickManager;
     }
 }

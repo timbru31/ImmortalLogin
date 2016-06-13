@@ -79,6 +79,10 @@ public class ImmortalLoginListener implements Listener {
                             .cancelTask(plugin.getTaskIDs().get(damager.getUniqueId()));
                             plugin.getTaskIDs().remove(damager.getUniqueId());
                             utilities.message(damager, "ungod");
+                            if (plugin.getNickManager() != null) {
+                                plugin.getNickManager().removeNick(damager.getUniqueId());
+                                plugin.getNickManager().removeSkin(damager.getUniqueId());
+                            }
                             return;
                         }
                         int rest = plugin.getHits() - tempHits;
