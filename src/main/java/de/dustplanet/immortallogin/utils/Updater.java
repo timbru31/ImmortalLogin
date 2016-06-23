@@ -21,10 +21,10 @@ public class Updater {
     private JavaPlugin plugin;
     private static final String API_KEY = "98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4";
     private static final String REQUEST_METHOD = "POST";
-    private final String RESOURCE_ID;
+    private final String resourceID;
     private static final String HOST = "https://www.spigotmc.org";
     private static final String QUERY = "/api/general.php";
-    private String WRITE_STRING;
+    private String writeString;
 
     private String version;
     private String oldVersion;
@@ -38,7 +38,7 @@ public class Updater {
     }
 
     public Updater(JavaPlugin plugin, Integer resourceId, boolean disabled) {
-        RESOURCE_ID = Integer.toString(resourceId);
+        resourceID = Integer.toString(resourceId);
         this.plugin = plugin;
         oldVersion = this.plugin.getDescription().getVersion();
 
@@ -61,7 +61,7 @@ public class Updater {
             return;
         }
 
-        WRITE_STRING = "key=" + API_KEY + "&resource=" + RESOURCE_ID;
+        writeString = "key=" + API_KEY + "&resource=" + resourceID;
         run();
     }
 
@@ -69,7 +69,7 @@ public class Updater {
         connection.setDoOutput(true);
         try {
             connection.setRequestMethod(REQUEST_METHOD);
-            connection.getOutputStream().write(WRITE_STRING.getBytes("UTF-8"));
+            connection.getOutputStream().write(writeString.getBytes("UTF-8"));
         } catch (IOException e) {
             plugin.getLogger().severe("Failed to open the connection to SpigotMC.");
             e.printStackTrace();

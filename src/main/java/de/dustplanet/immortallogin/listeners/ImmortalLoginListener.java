@@ -23,7 +23,7 @@ public class ImmortalLoginListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         final Player player = event.getPlayer();
-        if (!player.hasPlayedBefore() || true) {
+        if (!player.hasPlayedBefore()) {
             plugin.setGod(player);
             final ImmortaLoginUtilities utilz = utilities;
             final ImmortalLogin instance = plugin;
