@@ -58,6 +58,12 @@
       <groupId>org.inventivetalent.nicknamer</groupId>
       <artifactId>api</artifactId>
       <version>3.11.5</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.bukkit</groupId>
+          <artifactId>bukkit</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 
