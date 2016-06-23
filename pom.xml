@@ -67,6 +67,10 @@
           <groupId>org.bukkit</groupId>
           <artifactId>craftbukkit</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.spigotmc</groupId>
+          <artifactId>spigot</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
   </dependencies>
