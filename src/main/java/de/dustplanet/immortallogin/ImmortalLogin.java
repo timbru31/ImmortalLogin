@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -16,7 +17,6 @@ import de.dustplanet.immortallogin.commands.ImmortalLoginCommands;
 import de.dustplanet.immortallogin.listeners.ImmortalLoginListener;
 import de.dustplanet.immortallogin.utils.ImmortaLoginUtilities;
 import de.dustplanet.immortallogin.utils.ScalarYamlConfiguration;
-import net.md_5.bungee.api.ChatColor;
 
 public class ImmortalLogin extends JavaPlugin {
     private ArrayList<UUID> gods = new ArrayList<>();
