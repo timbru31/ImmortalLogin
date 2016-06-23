@@ -92,7 +92,7 @@ public class ImmortaLoginUtilities {
         plugin.saveConfig();
 
         int seconds = config.getInt("first-login.seconds", 1200);
-        float temp = seconds / 60;
+        float temp = seconds / (float) 60;
         int hits = config.getInt("first-login.hits", 20);
         plugin.setSeconds(seconds);
         plugin.setHits(hits);
@@ -109,13 +109,17 @@ public class ImmortaLoginUtilities {
     }
 
     public void loadLocalization(FileConfiguration localization, File localizationFile) {
-        localization.addDefault("damage", "&5[ImmortalLogin] &4You can not hit &e%player% &4in your first &e%time% minute(s)&4!");
-        localization.addDefault("hitsLeft", "&5[ImmortalLogin] &4Only &e%hits% hits &4left until your god mode will be disabled!");
+        localization.addDefault("damage",
+                "&5[ImmortalLogin] &4You can not hit &e%player% &4in your first &e%time% minute(s)&4!");
+        localization.addDefault("hitsLeft",
+                "&5[ImmortalLogin] &4Only &e%hits% hits &4left until your god mode will be disabled!");
         localization.addDefault("god", "&5[ImmortalLogin] &2You are now &e%time% minutes(s) &2in god mode!");
         localization.addDefault("noConsole", "&5[ImmortalLogin] &4The console can not use the /im command");
         localization.addDefault("notInGodMode", "&5[ImmortalLogin] &4You are not in god mode anymore!");
-        localization.addDefault("targetInGodMode", "&5[ImmortalLogin] &4You can not hit &e%player% &4in his first &e%time% minute(s)&4!");
-        localization.addDefault("timeLeft", "&5[ImmortalLogin] &2Note: Your god mode will expire in &e%time% minute(s)&2!");
+        localization.addDefault("targetInGodMode",
+                "&5[ImmortalLogin] &4You can not hit &e%player% &4in his first &e%time% minute(s)&4!");
+        localization.addDefault("timeLeft",
+                "&5[ImmortalLogin] &2Note: Your god mode will expire in &e%time% minute(s)&2!");
         localization.addDefault("ungod", "&5[ImmortalLogin] &4You are no longer in god mode!");
         localization.options().copyDefaults(true);
         saveLocalization(localization, localizationFile);

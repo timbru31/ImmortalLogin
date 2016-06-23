@@ -26,7 +26,7 @@ public class ImmortalLogin extends JavaPlugin {
     private FileConfiguration localization;
     private File configFile, localizationFile;
     private ImmortaLoginUtilities utilities = new ImmortaLoginUtilities(this);
-    private  NickManager nickManager;
+    private NickManager nickManager;
 
     @Override
     public void onDisable() {
@@ -91,7 +91,8 @@ public class ImmortalLogin extends JavaPlugin {
         addTimer(player);
 
         if (getNickManager() != null) {
-            getNickManager().setNick(player.getUniqueId(), ChatColor.valueOf(getConfig().getString("nickColor", "DARK_PURPLE")) + player.getName());
+            getNickManager().setNick(player.getUniqueId(),
+                    ChatColor.valueOf(getConfig().getString("nickColor", "DARK_PURPLE")) + player.getName());
             getNickManager().setSkin(player.getUniqueId(), player.getName());
         }
         final ImmortaLoginUtilities utilz = utilities;
@@ -110,7 +111,7 @@ public class ImmortalLogin extends JavaPlugin {
                     }
                 }
             }
-        }, getSeconds() * 20);
+        }, getSeconds() * (long) 20);
     }
 
     private void addTimer(final Player player) {

@@ -94,7 +94,8 @@ public class ImmortalLoginListener implements Listener {
                     int rest = plugin.getHits() - 1;
                     utilities.message(damager, "hitsLeft", "", "", Integer.toString(rest));
                 } else if (plugin.getGods().contains(target.getUniqueId())) {
-                    utilities.message(damager, "targetInGodMode", target.getName(), Integer.toString(plugin.getMinutes()));
+                    utilities.message(damager, "targetInGodMode", target.getName(),
+                            Integer.toString(plugin.getMinutes()));
                     event.setCancelled(true);
                 }
             }

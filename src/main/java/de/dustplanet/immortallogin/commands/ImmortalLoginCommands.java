@@ -23,7 +23,7 @@ public class ImmortalLoginCommands implements CommandExecutor {
             Player player = (Player) sender;
             if (plugin.getGods().contains(player.getUniqueId())) {
                 utilities.message(sender, "ungod");
-                plugin.getGods().remove(sender.getName());
+                plugin.getGods().remove(player.getUniqueId());
                 plugin.getServer().getScheduler().cancelTask(plugin.getTaskIDs().get(player.getUniqueId()));
                 plugin.getTaskIDs().remove(player.getUniqueId());
             } else {

@@ -19,19 +19,20 @@ public class ScalarYamlConfiguration extends YamlConfiguration {
     private final Representer yamlRepresenter = new YamlRepresenter();
     private final Yaml yaml = new Yaml(new YamlConstructor(), yamlRepresenter, yamlOptions);
 
-
     /**
      * Creates a new {@link YamlConfiguration}, loading from the given file.
      * <p>
-     * Any errors loading the Configuration will be logged and then ignored.
-     * If the specified input is not a valid config, a blank config will be
+     * Any errors loading the Configuration will be logged and then ignored. If
+     * the specified input is not a valid config, a blank config will be
      * returned.
      * <p>
      * The encoding used may follow the system dependent default.
      *
-     * @param file Input file
+     * @param file
+     *            Input file
      * @return Resulting configuration
-     * @throws IllegalArgumentException Thrown if file is null
+     * @throws IllegalArgumentException
+     *             Thrown if file is null
      */
     public static ScalarYamlConfiguration loadConfiguration(File file) {
         Validate.notNull(file, "File cannot be null");
