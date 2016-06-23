@@ -58,19 +58,13 @@
       <groupId>org.inventivetalent.nicknamer</groupId>
       <artifactId>api</artifactId>
       <version>3.11.5</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>craftbukkit</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 
  <build>
     <!-- Compile for 1.7 and clean before -->
     <defaultGoal>clean compile package</defaultGoal>
-    <finalName>SuperWheat</finalName>
+    <finalName>ImmortalLogin</finalName>
     <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
     <plugins>
       <plugin>
