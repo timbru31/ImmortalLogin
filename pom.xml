@@ -57,7 +57,7 @@
     <dependency>
       <groupId>org.inventivetalent.nicknamer</groupId>
       <artifactId>api</artifactId>
-      <version>3.11.5</version>
+      <version>3.11.6</version>
       <exclusions>
         <exclusion>
           <groupId>org.bukkit</groupId>
