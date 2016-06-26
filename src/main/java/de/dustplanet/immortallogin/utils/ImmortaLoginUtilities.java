@@ -117,7 +117,7 @@ public class ImmortaLoginUtilities {
         localization.addDefault("noConsole", "&5[ImmortalLogin] &4The console can not use the /im command");
         localization.addDefault("notInGodMode", "&5[ImmortalLogin] &4You are not in god mode anymore!");
         localization.addDefault("targetInGodMode",
-                "&5[ImmortalLogin] &4You can not hit &e%player% &4in his first &e%time% minute(s)&4!");
+                "&5[ImmortalLogin] &4You can not hit &e%player% &4in his/her first &e%time% minute(s)&4!");
         localization.addDefault("timeLeft",
                 "&5[ImmortalLogin] &2Note: Your god mode will expire in &e%time% minute(s)&2!");
         localization.addDefault("ungod", "&5[ImmortalLogin] &4You are no longer in god mode!");
