@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.dustplanet</groupId>
   <artifactId>ImmortalLogin</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2-SNAPSHOT</version>
   <name>ImmortalLogin</name>
   <description>A temporary god mode for new players</description>
   <url>https://www.spigotmc.org/resources/</url>
@@ -178,7 +178,7 @@
   <scm>
     <url>https://github.com/timbru31/ImmortalLogin</url>
     <connection>scm:git:git://github.com/timbru31/ImmortalLogin.git</connection>
-    <tag>ImmortalLogin-1.0.1</tag>
+    <tag>master</tag>
     <developerConnection>scm:git:git@github.com:timbru31/ImmortalLogin.git</developerConnection>
   </scm>
 
