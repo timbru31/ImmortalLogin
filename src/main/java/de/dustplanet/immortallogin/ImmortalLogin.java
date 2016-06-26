@@ -19,6 +19,7 @@ import de.dustplanet.immortallogin.utils.ImmortaLoginUtilities;
 import de.dustplanet.immortallogin.utils.ScalarYamlConfiguration;
 
 public class ImmortalLogin extends JavaPlugin {
+    private static final int RESOURCE_ID = 25481;
     private ArrayList<UUID> gods = new ArrayList<>();
     private HashMap<UUID, Integer> aggros = new HashMap<>();
     private HashMap<UUID, Integer> taskIDs = new HashMap<>();
@@ -66,7 +67,7 @@ public class ImmortalLogin extends JavaPlugin {
         utilities.loadLocalization(getLocalization(), localizationFile);
 
         utilities.startPiracyTask();
-        utilities.checkForUpdate(0);
+        utilities.checkForUpdate(RESOURCE_ID);
         utilities.trackMetrics();
 
         PluginManager pluginManager = getServer().getPluginManager();
