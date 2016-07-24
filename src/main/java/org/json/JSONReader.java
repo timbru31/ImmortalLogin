@@ -1,4 +1,4 @@
-package de.dustplanet.immortallogin.piracy.checker;
+package org.json;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -11,21 +11,17 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import de.dustplanet.immortallogin.ImmortalLogin;
-import de.dustplanet.immortallogin.piracy.ImmortalLoginPiracyDetector;
 
-public class ImmortalLoginPiracyChecker {
+public class JSONReader {
     private ImmortalLogin plugin;
 
-    public ImmortalLoginPiracyChecker(ImmortalLogin plugin) {
+    public JSONReader(ImmortalLogin plugin) {
         this.plugin = plugin;
     }
 
     // HTTP POST request
-    public int sendPost() throws BlackListedException {
+    public int sendPost(String userId) throws HTTPTokenException {
         // URL
         URL url = null;
         try {
@@ -46,7 +42,6 @@ public class ImmortalLoginPiracyChecker {
 
         // Get user id
         String rawData = "user_id=";
-        String userId = new ImmortalLoginPiracyDetector().getUserID();
         String encodedData = null;
         try {
             encodedData = rawData + URLEncoder.encode(userId, "UTF-8");
@@ -124,10 +119,10 @@ public class ImmortalLoginPiracyChecker {
         return responseCode;
     }
 
-    private void disableDueToError(String... messages) throws BlackListedException {
+    private void disableDueToError(String... messages) throws HTTPTokenException {
         for (String message : messages) {
             plugin.getLogger().severe(message);
         }
-        throw new BlackListedException();
+        throw new HTTPTokenException();
     }
 }

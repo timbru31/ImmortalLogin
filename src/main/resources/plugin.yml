@@ -9,4 +9,12 @@ commands:
     description: Removes GodMode
     usage: /im
     aliases: [im, immortal]
+permissions:
+  immortallogin.*:
+    description: Gives access to all ImmortalLogin permissions
+    children:
+      immortallogin.list.gods: true
+  immortallogin.list.gods:
+    description: Allows you to see the list of players in god mode
+    default: op
 softdepend: [NickNamer]

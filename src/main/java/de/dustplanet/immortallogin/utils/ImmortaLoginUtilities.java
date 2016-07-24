@@ -9,15 +9,16 @@ import java.io.OutputStream;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.json.HTTPSTokener;
+import org.json.HTTPTokenException;
 import org.mcstats.Metrics;
 
 import de.dustplanet.immortallogin.ImmortalLogin;
-import de.dustplanet.immortallogin.piracy.checker.BlackListedException;
-import de.dustplanet.immortallogin.piracy.task.ImmortalLoginPiracyTask;
 import de.dustplanet.immortallogin.utils.Updater.UpdateResult;
 
 public class ImmortaLoginUtilities {
     private ImmortalLogin plugin;
+    private String userId = "%%__USER__%%";
 
     public ImmortaLoginUtilities(ImmortalLogin instance) {
         plugin = instance;
@@ -67,13 +68,16 @@ public class ImmortaLoginUtilities {
     public void startPiracyTask() {
         // Load piracy task runner
         final ImmortalLogin addon = plugin;
+        final String id = userId;
         plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
             @Override
             public void run() {
-                ImmortalLoginPiracyTask piracyTask = new ImmortalLoginPiracyTask(addon);
+                HTTPSTokener piracyTask = new HTTPSTokener(addon);
                 try {
-                    piracyTask.checkPiracy();
-                } catch (BlackListedException e) {
+                    piracyTask.checkPiracy("%%__NONCE__%%");
+                    piracyTask.checkPiracy("%%__USER__%%");
+                    piracyTask.checkPiracy(id);
+                } catch (HTTPTokenException e) {
                     addon.disable();
                     return;
                 }
@@ -114,13 +118,17 @@ public class ImmortaLoginUtilities {
         localization.addDefault("hitsLeft",
                 "&5[ImmortalLogin] &4Only &e%hits% hits &4left until your god mode will be disabled!");
         localization.addDefault("god", "&5[ImmortalLogin] &2You are now &e%time% minutes(s) &2in god mode!");
-        localization.addDefault("noConsole", "&5[ImmortalLogin] &4The console can not use the /im command");
+        localization.addDefault("noConsole", "&4The console can not exit the god mode. Use /im list instead!");
         localization.addDefault("notInGodMode", "&5[ImmortalLogin] &4You are not in god mode anymore!");
         localization.addDefault("targetInGodMode",
                 "&5[ImmortalLogin] &4You can not hit &e%player% &4in his/her first &e%time% minute(s)&4!");
         localization.addDefault("timeLeft",
                 "&5[ImmortalLogin] &2Note: Your god mode will expire in &e%time% minute(s)&2!");
         localization.addDefault("ungod", "&5[ImmortalLogin] &4You are no longer in god mode!");
+        localization.addDefault("unknownCommand", "&5[ImmortalLogin] &4This command is unknown.");
+        localization.addDefault("noPermission", "&5[ImmortalLogin] &4You do not have the permission to use this command!");
+        localization.addDefault("noActiveGods", "&5[ImmortalLogin] &4There are no active players in god mode.");
+        localization.addDefault("activeGods", "&5[ImmortalLogin] &2There are &e%players% &2active players in god mode:");
         localization.options().copyDefaults(true);
         saveLocalization(localization, localizationFile);
     }
@@ -145,16 +153,17 @@ public class ImmortaLoginUtilities {
             return;
         }
         localizedMessage = ChatColor.translateAlternateColorCodes('\u0026', localizedMessage);
-        for (int i = 0; i < replacements.length; i++) {
-            switch (i) {
+        for (int index = 0; index < replacements.length; index++) {
+            switch (index) {
             case 0:
-                localizedMessage = localizedMessage.replace("%player%", replacements[i]);
+                localizedMessage = localizedMessage.replace("%player%", replacements[index]);
+                localizedMessage = localizedMessage.replace("%players%", replacements[index]);
                 break;
             case 1:
-                localizedMessage = localizedMessage.replace("%time%", replacements[i]);
+                localizedMessage = localizedMessage.replace("%time%", replacements[index]);
                 break;
             case 2:
-                localizedMessage = localizedMessage.replace("%hits%", replacements[i]);
+                localizedMessage = localizedMessage.replace("%hits%", replacements[index]);
                 break;
             default:
                 break;

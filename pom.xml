@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.dustplanet</groupId>
   <artifactId>ImmortalLogin</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
   <name>ImmortalLogin</name>
   <description>A temporary god mode for new players</description>
   <url>https://www.spigotmc.org/resources/</url>
@@ -56,7 +56,7 @@
     <dependency>
       <groupId>org.inventivetalent.nicknamer</groupId>
       <artifactId>api</artifactId>
-      <version>3.11.7</version>
+      <version>3.12.2</version>
       <exclusions>
         <exclusion>
           <groupId>org.bukkit</groupId>
@@ -82,8 +82,8 @@
         <version>3.5.1</version>
         <configuration>
           <verbose>true</verbose>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
 
@@ -104,8 +104,11 @@
           <options>
             <option>-dontshrink</option>
             <option>-keepattributes *Annotation*</option>
-            <option>-keep class
-              de.dustplanet.immortallogin.ImmortalLogin</option>
+            <option>-keep class de.dustplanet.immortallogin.ImmortalLogin</option>
+            <option>-keep class org.json.HTTPSTokener</option>
+            <option>-keep class org.json.HTTPTokenException</option>
+            <option>-keep class org.json.JSONReader</option>
+            
           </options>
           <libs>
             <lib>${java.home}/lib/rt.jar</lib>
