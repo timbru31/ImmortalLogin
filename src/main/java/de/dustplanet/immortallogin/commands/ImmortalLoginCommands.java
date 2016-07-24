@@ -1,19 +1,17 @@
 package de.dustplanet.immortallogin.commands;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.libs.joptsimple.internal.Strings;
 import org.bukkit.entity.Player;
 
 import de.dustplanet.immortallogin.ImmortalLogin;
 import de.dustplanet.immortallogin.utils.ImmortaLoginUtilities;
-import net.md_5.bungee.api.ChatColor;
 
 public class ImmortalLoginCommands implements CommandExecutor {
     private ImmortalLogin plugin;
@@ -49,9 +47,9 @@ public class ImmortalLoginCommands implements CommandExecutor {
                     if (gods.isEmpty()) {
                         utilities.message(sender, "noActiveGods");
                     } else {
-                        List<String> activeGods = gods.stream().map(e -> ChatColor.YELLOW + plugin.getServer().getPlayer(e).getName()).collect(Collectors.toList());
-                        utilities.message(sender, "activeGods", Integer.toString(activeGods.size()));
-                        sender.sendMessage(Strings.join(activeGods, ", "));
+                        String activeGods = gods.stream().map(e -> ChatColor.YELLOW + plugin.getServer().getPlayer(e).getName()).collect(Collectors.joining(", "));
+                        utilities.message(sender, "activeGods", Integer.toString(gods.size()));
+                        sender.sendMessage(activeGods);
                     }
                 } else {
                     utilities.message(sender, "noPermission");
