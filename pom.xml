@@ -70,6 +70,10 @@
           <groupId>org.bukkit</groupId>
           <artifactId>craftbukkit</artifactId>
         </exclusion>
+        <exclusion>
+          <groupId>org.mcstats.bukkit</groupId>
+          <artifactId>metrics</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
   </dependencies>
