@@ -22,7 +22,8 @@ public class ImmortalLogin extends JavaPlugin {
     private static final int RESOURCE_ID = 25481;
     private ArrayList<UUID> gods = new ArrayList<>();
     private HashMap<UUID, Integer> aggros = new HashMap<>();
-    private HashMap<UUID, Integer> taskIDs = new HashMap<>();
+    private HashMap<UUID, Integer> timerTaskIDs = new HashMap<>();
+    private HashMap<UUID, Integer> ungodTaskIDs = new HashMap<>();
     private int seconds, minutes, hits;
     private FileConfiguration localization;
     private File configFile, localizationFile;
@@ -33,10 +34,14 @@ public class ImmortalLogin extends JavaPlugin {
     public void onDisable() {
         getGods().clear();
         getAggros().clear();
-        for (int taskID : getTaskIDs().values()) {
+        for (int taskID : getTimerTaskIDs().values()) {
             getServer().getScheduler().cancelTask(taskID);
         }
-        getTaskIDs().clear();
+        getTimerTaskIDs().clear();
+        for (int taskID : getUngodTaskIDs().values()) {
+            getServer().getScheduler().cancelTask(taskID);
+        }
+        getUngodTaskIDs().clear();
         getServer().getScheduler().cancelTasks(this);
     }
 
@@ -98,14 +103,15 @@ public class ImmortalLogin extends JavaPlugin {
         }
         final ImmortaLoginUtilities utilz = utilities;
         final NickManager _nickManager = getNickManager();
-        getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
+        int ungodTaskID = getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
             @Override
             public void run() {
                 if (getGods().contains(player.getUniqueId())) {
                     utilz.message(player, "ungod");
                     getGods().remove(player.getUniqueId());
-                    getServer().getScheduler().cancelTask(getTaskIDs().get(player.getUniqueId()));
-                    getTaskIDs().remove(player.getUniqueId());
+                    getServer().getScheduler().cancelTask(getTimerTaskIDs().get(player.getUniqueId()));
+                    getTimerTaskIDs().remove(player.getUniqueId());
+                    getUngodTaskIDs().remove(player.getUniqueId());
                     if (_nickManager != null) {
                         _nickManager.removeNick(player.getUniqueId());
                         _nickManager.removeSkin(player.getUniqueId());
@@ -113,6 +119,7 @@ public class ImmortalLogin extends JavaPlugin {
                 }
             }
         }, getSeconds() * (long) 20);
+        getUngodTaskIDs().put(player.getUniqueId(), ungodTaskID);
     }
 
     private void addTimer(final Player player) {
@@ -122,7 +129,6 @@ public class ImmortalLogin extends JavaPlugin {
         final int secondz = seconds;
         int taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
             int i = 1;
-
             @Override
             public void run() {
                 int rest = (secondz - tempSubtract * i) / 60;
@@ -133,7 +139,7 @@ public class ImmortalLogin extends JavaPlugin {
                 i++;
             }
         }, delay, delay);
-        getTaskIDs().put(player.getUniqueId(), taskID);
+        getTimerTaskIDs().put(player.getUniqueId(), taskID);
     }
 
     public JavaPlugin getPlugin() {
@@ -148,8 +154,8 @@ public class ImmortalLogin extends JavaPlugin {
         return gods;
     }
 
-    public HashMap<UUID, Integer> getTaskIDs() {
-        return taskIDs;
+    public HashMap<UUID, Integer> getTimerTaskIDs() {
+        return timerTaskIDs;
     }
 
     public HashMap<UUID, Integer> getAggros() {
@@ -194,5 +200,9 @@ public class ImmortalLogin extends JavaPlugin {
 
     public void setNickManager(NickManager nickManager) {
         this.nickManager = nickManager;
+    }
+
+    public HashMap<UUID, Integer> getUngodTaskIDs() {
+        return ungodTaskIDs;
     }
 }

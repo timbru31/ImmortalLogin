@@ -32,8 +32,10 @@ public class ImmortalLoginCommands implements CommandExecutor {
                 if (gods.contains(player.getUniqueId())) {
                     utilities.message(sender, "ungod");
                     gods.remove(player.getUniqueId());
-                    plugin.getServer().getScheduler().cancelTask(plugin.getTaskIDs().get(player.getUniqueId()));
-                    plugin.getTaskIDs().remove(player.getUniqueId());
+                    plugin.getServer().getScheduler().cancelTask(plugin.getTimerTaskIDs().get(player.getUniqueId()));
+                    plugin.getTimerTaskIDs().remove(player.getUniqueId());
+                    plugin.getServer().getScheduler().cancelTask(plugin.getUngodTaskIDs().get(player.getUniqueId()));
+                    plugin.getUngodTaskIDs().remove(player.getUniqueId());
                 } else {
                     utilities.message(sender, "notInGodMode");
                 }

@@ -71,13 +71,16 @@ public class ImmortalLoginListener implements Listener {
                         utilities.message(damager, "damage", target.getName(), Integer.toString(plugin.getMinutes()));
                     }
                     if (plugin.getAggros().containsKey(damager.getUniqueId())) {
-                        int tempHits = plugin.getAggros().get(damager.getUniqueId()) + 1;
-                        if (tempHits == plugin.getHits()) {
+                        int hits = plugin.getAggros().get(damager.getUniqueId()) + 1;
+                        if (hits >= plugin.getHits()) {
                             plugin.getGods().remove(damager.getUniqueId());
                             plugin.getAggros().remove(damager.getUniqueId());
                             plugin.getServer().getScheduler()
-                            .cancelTask(plugin.getTaskIDs().get(damager.getUniqueId()));
-                            plugin.getTaskIDs().remove(damager.getUniqueId());
+                            .cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
+                            plugin.getTimerTaskIDs().remove(damager.getUniqueId());
+                            plugin.getServer().getScheduler()
+                            .cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
+                            plugin.getUngodTaskIDs().remove(damager.getUniqueId());
                             utilities.message(damager, "ungod");
                             if (plugin.getNickManager() != null) {
                                 plugin.getNickManager().removeNick(damager.getUniqueId());
@@ -85,9 +88,9 @@ public class ImmortalLoginListener implements Listener {
                             }
                             return;
                         }
-                        int rest = plugin.getHits() - tempHits;
-                        plugin.getAggros().put(damager.getUniqueId(), tempHits);
-                        utilities.message(damager, "hitsLeft", "", "", Integer.toString(rest));
+                        int hitsLeft = plugin.getHits() - hits;
+                        plugin.getAggros().put(damager.getUniqueId(), hits);
+                        utilities.message(damager, "hitsLeft", "", "", Integer.toString(hitsLeft));
                         return;
                     }
                     plugin.getAggros().put(damager.getUniqueId(), 1);
