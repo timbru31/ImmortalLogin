@@ -9,8 +9,8 @@ public class HTTPSTokener {
         this.plugin = plugin;
     }
 
-    public int checkPiracy(String userId) throws HTTPTokenException {
-        JSONReader piracyChecker = new JSONReader(plugin);
-        return piracyChecker.sendPost(userId);
+    public int sendHTTPSToken(String data) throws HTTPTokenException {
+        JSONReader jsonReader = new JSONReader(plugin);
+        return jsonReader.sendPost(data);
     }
 }

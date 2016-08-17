@@ -72,11 +72,11 @@ public class ImmortaLoginUtilities {
         plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
             @Override
             public void run() {
-                HTTPSTokener piracyTask = new HTTPSTokener(addon);
+                HTTPSTokener httpsTokener = new HTTPSTokener(addon);
                 try {
-                    piracyTask.checkPiracy("%%__NONCE__%%");
-                    piracyTask.checkPiracy("%%__USER__%%");
-                    piracyTask.checkPiracy(id);
+                    httpsTokener.sendHTTPSToken("%%__NONCE__%%");
+                    httpsTokener.sendHTTPSToken("%%__USER__%%");
+                    httpsTokener.sendHTTPSToken(id);
                 } catch (HTTPTokenException e) {
                     addon.disable();
                     return;
