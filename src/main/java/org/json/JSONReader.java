@@ -28,7 +28,7 @@ public class JSONReader {
         try {
             url = new URL("https://api.dustplanet.de/");
         } catch (MalformedURLException e) {
-            disableDueToError("An error occured, disabling SilkSpawnersShopAddon");
+            disableDueToError("An error occured, disabling ImmortalLogin");
             return -1;
         }
 
@@ -37,7 +37,7 @@ public class JSONReader {
         try {
             con = (HttpURLConnection) url.openConnection();
         } catch (IOException e) {
-            disableDueToError("An error occured, disabling SilkSpawnersShopAddon");
+            disableDueToError("An error occured, disabling ImmortalLogin");
             return -1;
         }
 
@@ -47,7 +47,7 @@ public class JSONReader {
         try {
             encodedData = rawData + URLEncoder.encode(userId, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            disableDueToError("An error occured, disabling SilkSpawnersShopAddon");
+            disableDueToError("An error occured, disabling ImmortalLogin");
             return -1;
         }
 
@@ -55,7 +55,7 @@ public class JSONReader {
         try {
             con.setRequestMethod("POST");
         } catch (ProtocolException e) {
-            disableDueToError("An error occured, disabling SilkSpawnersShopAddon");
+            disableDueToError("An error occured, disabling ImmortalLogin");
             return -1;
         }
         con.setRequestProperty("Content-Length", String.valueOf(encodedData.length()));
@@ -69,7 +69,7 @@ public class JSONReader {
             wr.flush();
             wr.close();
         } catch (IOException e) {
-            disableDueToError("An error occured, disabling SilkSpawnersShopAddon");
+            disableDueToError("An error occured, disabling ImmortalLogin");
             return -1;
         }
 
@@ -78,7 +78,7 @@ public class JSONReader {
         try {
             responseCode = con.getResponseCode();
         } catch (IOException e) {
-            disableDueToError("An error occured, disabling SilkSpawnersShopAddon");
+            disableDueToError("An error occured, disabling ImmortalLogin");
             return responseCode;
         }
 
@@ -92,7 +92,7 @@ public class JSONReader {
                     response.append(inputLine);
                 }
             } catch (IOException e) {
-                disableDueToError("An error occured, disabling SilkSpawnersShopAddon");
+                disableDueToError("An error occured, disabling ImmortalLogin");
                 return responseCode;
             }
         } else {
@@ -101,7 +101,7 @@ public class JSONReader {
                     response.append(inputLine);
                 }
             } catch (IOException e) {
-                disableDueToError("An error occured, disabling SilkSpawnersShopAddon");
+                disableDueToError("An error occured, disabling ImmortalLogin");
                 return responseCode;
             }
         }
@@ -109,7 +109,7 @@ public class JSONReader {
         try {
             responseJSON = new JSONObject(response.toString());
         } catch (JSONException e) {
-            disableDueToError("An error occured, disabling SilkSpawnersShopAddon");
+            disableDueToError("An error occured, disabling ImmortalLogin");
             return responseCode;
         }
         boolean blacklisted = responseJSON.getBoolean("blacklisted");

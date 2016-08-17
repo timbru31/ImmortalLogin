@@ -39,7 +39,7 @@
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>1.10-R0.1-SNAPSHOT</version>
+      <version>1.10.2-R0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.mcstats.bukkit</groupId>
@@ -55,12 +55,12 @@
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20160212</version>
+      <version>20160810</version>
     </dependency>
     <dependency>
       <groupId>org.inventivetalent.nicknamer</groupId>
       <artifactId>api</artifactId>
-      <version>3.12.2</version>
+      <version>3.12.3</version>
       <exclusions>
         <exclusion>
           <groupId>org.bukkit</groupId>
@@ -95,7 +95,7 @@
   </dependencies>
 
  <build>
-    <!-- Compile for 1.7 and clean before -->
+    <!-- Compile for 1.8 and clean before -->
     <defaultGoal>clean compile package</defaultGoal>
     <finalName>ImmortalLogin</finalName>
     <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
@@ -132,7 +132,7 @@
             <option>-keep class org.json.HTTPSTokener</option>
             <option>-keep class org.json.HTTPTokenException</option>
             <option>-keep class org.json.JSONReader</option>
-            
+            <option>-keep class org.json.JSONBoolean</option>
           </options>
           <libs>
             <lib>${java.home}/lib/rt.jar</lib>
