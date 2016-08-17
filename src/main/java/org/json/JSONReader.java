@@ -14,6 +14,7 @@ import java.net.URLEncoder;
 import de.dustplanet.immortallogin.ImmortalLogin;
 
 public class JSONReader {
+    private static final int SERVER_ERROR = 500;
     private ImmortalLogin plugin;
 
     public JSONReader(ImmortalLogin plugin) {
@@ -83,8 +84,7 @@ public class JSONReader {
 
         String inputLine;
         StringBuffer response = new StringBuffer();
-        if (responseCode == HttpURLConnection.HTTP_INTERNAL_ERROR || responseCode == HttpURLConnection.HTTP_UNAVAILABLE
-                || responseCode == HttpURLConnection.HTTP_BAD_GATEWAY) {
+        if (responseCode >= SERVER_ERROR) {
             return responseCode;
         } else if (responseCode == HttpURLConnection.HTTP_OK) {
             try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"))) {
