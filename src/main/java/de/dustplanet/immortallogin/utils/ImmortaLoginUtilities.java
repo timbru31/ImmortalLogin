@@ -25,7 +25,6 @@ public class ImmortaLoginUtilities {
     }
 
     public void checkForUpdate(final int resourceID) {
-        // Updater
         boolean updaterDisabled = plugin.getConfig().getBoolean("disableUpdater", false);
         if (!updaterDisabled) {
             final ImmortalLogin instance = plugin;
@@ -55,7 +54,6 @@ public class ImmortaLoginUtilities {
     }
 
     public void trackMetrics() {
-        // Metrics
         try {
             Metrics metrics = new Metrics(plugin);
             metrics.start();
@@ -96,11 +94,11 @@ public class ImmortaLoginUtilities {
         plugin.saveConfig();
 
         int seconds = config.getInt("first-login.seconds", 1200);
-        float temp = seconds / (float) 60;
+        float minutes = seconds / (float) 60;
         int hits = config.getInt("first-login.hits", 20);
         plugin.setSeconds(seconds);
         plugin.setHits(hits);
-        plugin.setMinutes(Math.round(temp));
+        plugin.setMinutes(Math.round(minutes));
     }
 
     public void saveLocalization(FileConfiguration localization, File localizationFile) {
