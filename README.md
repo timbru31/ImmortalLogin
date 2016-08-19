@@ -37,7 +37,7 @@ nickColor: 'DARK_PURPLE'
 | immortallogin | immortal, im | Ends the God mode before the limit | - |
 
 ## Support
-For support visit the dev.bukkit.org page: https://www.spigotmc.org/resources/12028/
+For support visit the SpigotMC page: https://www.spigotmc.org/resources/25481/
 
 ## Usage statistics
 [![MCStats](http://mcstats.org/signature/ImmortalLogin.png)](http://mcstats.org/plugin/ImmortalLogin)
