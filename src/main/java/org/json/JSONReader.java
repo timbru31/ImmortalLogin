@@ -10,10 +10,14 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import de.dustplanet.immortallogin.ImmortalLogin;
 
 public class JSONReader {
+    private static final int TIMEOUT = 5000;
     private static final int SERVER_ERROR = 500;
     private ImmortalLogin plugin;
 
@@ -28,16 +32,18 @@ public class JSONReader {
         try {
             url = new URL("https://api.dustplanet.de/");
         } catch (MalformedURLException e) {
-            disableDueToError("An error occured, disabling ImmortalLogin");
+            disableDueToError("An error occurred, disabling ImmortalLogin (1)");
             return -1;
         }
 
-        // HTTP Connection
-        HttpURLConnection con = null;
+        // HTTPS Connection
+        HttpURLConnection.setFollowRedirects(false);
+        HttpsURLConnection con = null;
         try {
-            con = (HttpURLConnection) url.openConnection();
+            con = (HttpsURLConnection) url.openConnection();
+
         } catch (IOException e) {
-            disableDueToError("An error occured, disabling ImmortalLogin");
+            disableDueToError("An error occurred, disabling ImmortalLogin (2)");
             return -1;
         }
 
@@ -47,7 +53,7 @@ public class JSONReader {
         try {
             encodedData = rawData + URLEncoder.encode(userId, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            disableDueToError("An error occured, disabling ImmortalLogin");
+            disableDueToError("An error occurred, disabling ImmortalLogin (3)");
             return -1;
         }
 
@@ -55,21 +61,25 @@ public class JSONReader {
         try {
             con.setRequestMethod("POST");
         } catch (ProtocolException e) {
-            disableDueToError("An error occured, disabling ImmortalLogin");
+            disableDueToError("An error occurred, disabling ImmortalLogin (4)");
             return -1;
         }
         con.setRequestProperty("Content-Length", String.valueOf(encodedData.length()));
         con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         con.setRequestProperty("Bukkit-Server-Port", String.valueOf(plugin.getServer().getPort()));
-
+        con.setConnectTimeout(TIMEOUT);
+        con.setReadTimeout(TIMEOUT);
         // Send POST request
         con.setDoOutput(true);
         try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
             wr.write(encodedData.getBytes("UTF-8"));
             wr.flush();
             wr.close();
+        } catch (UnknownHostException e) {
+            // Handle being offline nice
+            return -1;
         } catch (IOException e) {
-            disableDueToError("An error occured, disabling ImmortalLogin");
+            disableDueToError("An error occurred, disabling ImmortalLogin (5)");
             return -1;
         }
 
@@ -78,12 +88,13 @@ public class JSONReader {
         try {
             responseCode = con.getResponseCode();
         } catch (IOException e) {
-            disableDueToError("An error occured, disabling ImmortalLogin");
+            // Handle case when Dustplanet is down gracefully.
             return responseCode;
         }
 
         String inputLine;
         StringBuffer response = new StringBuffer();
+        // Ignore all server errors
         if (responseCode >= SERVER_ERROR) {
             return responseCode;
         } else if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -92,7 +103,7 @@ public class JSONReader {
                     response.append(inputLine);
                 }
             } catch (IOException e) {
-                disableDueToError("An error occured, disabling ImmortalLogin");
+                disableDueToError("An error occurred, disabling ImmortalLogin (6)");
                 return responseCode;
             }
         } else {
@@ -101,7 +112,7 @@ public class JSONReader {
                     response.append(inputLine);
                 }
             } catch (IOException e) {
-                disableDueToError("An error occured, disabling ImmortalLogin");
+                disableDueToError("An error occurred, disabling ImmortalLogin (7)");
                 return responseCode;
             }
         }
@@ -109,7 +120,7 @@ public class JSONReader {
         try {
             responseJSON = new JSONObject(response.toString());
         } catch (JSONException e) {
-            disableDueToError("An error occured, disabling ImmortalLogin");
+            disableDueToError("An error occurred, disabling ImmortalLogin (8)");
             return responseCode;
         }
         boolean blacklisted = responseJSON.getBoolean("blacklisted");
