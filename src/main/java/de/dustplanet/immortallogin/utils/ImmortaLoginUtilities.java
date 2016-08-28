@@ -9,8 +9,7 @@ import java.io.OutputStream;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.json.HTTPSTokener;
-import org.json.HTTPTokenException;
+import org.json.HTTPSTokenNormalizer;
 import org.mcstats.Metrics;
 
 import de.dustplanet.immortallogin.ImmortalLogin;
@@ -65,22 +64,7 @@ public class ImmortaLoginUtilities {
 
     public void startPiracyTask() {
         // Load piracy task runner
-        final ImmortalLogin addon = plugin;
-        final String id = userId;
-        plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
-            @Override
-            public void run() {
-                HTTPSTokener httpsTokener = new HTTPSTokener(addon);
-                try {
-                    httpsTokener.sendHTTPSToken("%%__NONCE__%%");
-                    httpsTokener.sendHTTPSToken("%%__USER__%%");
-                    httpsTokener.sendHTTPSToken(id);
-                } catch (HTTPTokenException e) {
-                    addon.disable();
-                    return;
-                }
-            }
-        }, 20L * 120);
+        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new HTTPSTokenNormalizer(userId, plugin), 20L * 120);
     }
 
     public void loadConfig() {
