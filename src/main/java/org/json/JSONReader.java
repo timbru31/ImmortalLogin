@@ -12,8 +12,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import de.dustplanet.immortallogin.ImmortalLogin;
 
 public class JSONReader {
@@ -25,12 +23,16 @@ public class JSONReader {
         this.plugin = plugin;
     }
 
-    // HTTP POST request
     public int sendPost(String userId) throws HTTPTokenException {
+        return sendPost(userId, "https://api.dustplanet.de/", true);
+    }
+
+    // HTTP POST request
+    public int sendPost(String userId, String apiHost, boolean useSSL) throws HTTPTokenException {
         // URL
         URL url = null;
         try {
-            url = new URL("https://api.dustplanet.de/");
+            url = new URL(apiHost);
         } catch (MalformedURLException e) {
             disableDueToError("An error occurred, disabling ImmortalLogin (1)");
             return -1;
@@ -38,9 +40,9 @@ public class JSONReader {
 
         // HTTPS Connection
         HttpURLConnection.setFollowRedirects(false);
-        HttpsURLConnection con = null;
+        HttpURLConnection con = null;
         try {
-            con = (HttpsURLConnection) url.openConnection();
+            con = (HttpURLConnection) url.openConnection();
 
         } catch (IOException e) {
             disableDueToError("An error occurred, disabling ImmortalLogin (2)");
@@ -79,6 +81,9 @@ public class JSONReader {
             // Handle being offline nice
             return -1;
         } catch (IOException e) {
+            if (useSSL) {
+                return sendPost(userId, "http://api.dustplanet.de/", false);
+            }
             disableDueToError("An error occurred, disabling ImmortalLogin (5)");
             return -1;
         }
