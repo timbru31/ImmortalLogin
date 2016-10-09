@@ -52,7 +52,7 @@ public class ImmortalLoginListener implements Listener {
         }
         Player player = (Player) event.getEntity();
         if (plugin.getGods().contains(player.getUniqueId())) {
-            player.setHealth(20);
+            player.setHealth(player.getMaxHealth());
             player.setRemainingAir(player.getMaximumAir());
             player.setFireTicks(-1);
             event.setCancelled(true);
