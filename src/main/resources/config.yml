@@ -3,3 +3,9 @@ first-login:
   hits: 20
   seconds: 1200
 nickColor: 'DARK_PURPLE'
+commandListEnabled: true
+commandListBlacklist: true
+commandList:
+- help
+- rules
+- motd

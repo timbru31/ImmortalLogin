@@ -1,11 +1,15 @@
 package de.dustplanet.immortallogin.listeners;
 
+import java.util.UUID;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import de.dustplanet.immortallogin.ImmortalLogin;
@@ -76,10 +80,10 @@ public class ImmortalLoginListener implements Listener {
                             plugin.getGods().remove(damager.getUniqueId());
                             plugin.getAggros().remove(damager.getUniqueId());
                             plugin.getServer().getScheduler()
-                            .cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
+                                    .cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
                             plugin.getTimerTaskIDs().remove(damager.getUniqueId());
                             plugin.getServer().getScheduler()
-                            .cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
+                                    .cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
                             plugin.getUngodTaskIDs().remove(damager.getUniqueId());
                             utilities.message(damager, "ungod");
                             if (plugin.getNickManager() != null) {
@@ -99,6 +103,27 @@ public class ImmortalLoginListener implements Listener {
                 } else if (plugin.getGods().contains(target.getUniqueId())) {
                     utilities.message(damager, "targetInGodMode", target.getName(),
                             Integer.toString(plugin.getMinutes()));
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        if (plugin.isCommandListEnabled()) {
+            Player player = event.getPlayer();
+            UUID playerUUID = event.getPlayer().getUniqueId();
+            String message = event.getMessage();
+            // Separate commands from the message
+            String command = message.replaceFirst("/", "");
+            if (command.contains(" ")) {
+                command = command.substring(0, command.indexOf(' '));
+            }
+            if (plugin.getGods().contains(playerUUID)) {
+                if ((plugin.isCommandBlackList() && plugin.getCommandList().contains(command))
+                        || (!plugin.isCommandBlackList() && !plugin.getCommandList().contains(command))) {
+                    utilities.message(player, "commandNotAllowed");
                     event.setCancelled(true);
                 }
             }

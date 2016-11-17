@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -69,11 +70,15 @@ public class ImmortaLoginUtilities {
 
     public void loadConfig() {
         // Add defaults
+        String commands[] = { "help", "rules", "motd" };
         FileConfiguration config = plugin.getConfig();
         config.addDefault("disableUpdater", false);
         config.addDefault("first-login.hits", 20);
         config.addDefault("first-login.seconds", 1200);
         config.addDefault("nickColor", "DARK_PURPLE");
+        config.addDefault("commandListEnabled", true);
+        config.addDefault("commandListBlacklist", true);
+        config.addDefault("commandList", Arrays.asList(commands));
         config.options().copyDefaults(true);
         plugin.saveConfig();
 
@@ -83,6 +88,10 @@ public class ImmortaLoginUtilities {
         plugin.setSeconds(seconds);
         plugin.setHits(hits);
         plugin.setMinutes(Math.round(minutes));
+        
+        plugin.setCommandBlackList(config.getBoolean("commandListBlacklist", true));
+        plugin.setCommandListEnabled(config.getBoolean("commandListEnabled", true));
+        plugin.setCommandList(config.getStringList("commandList"));
     }
 
     public void saveLocalization(FileConfiguration localization, File localizationFile) {
@@ -111,6 +120,7 @@ public class ImmortaLoginUtilities {
         localization.addDefault("noPermission", "&5[ImmortalLogin] &4You do not have the permission to use this command!");
         localization.addDefault("noActiveGods", "&5[ImmortalLogin] &4There are no active players in god mode.");
         localization.addDefault("activeGods", "&5[ImmortalLogin] &2There are &e%players% &2active players in god mode:");
+        localization.addDefault("commandNotAllowed", "&5[ImmortalLogin] &4This command is not allowed in god mode!");
         localization.options().copyDefaults(true);
         saveLocalization(localization, localizationFile);
     }

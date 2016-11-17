@@ -3,6 +3,7 @@ package de.dustplanet.immortallogin;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -17,19 +18,40 @@ import de.dustplanet.immortallogin.commands.ImmortalLoginCommands;
 import de.dustplanet.immortallogin.listeners.ImmortalLoginListener;
 import de.dustplanet.immortallogin.utils.ImmortaLoginUtilities;
 import de.dustplanet.immortallogin.utils.ScalarYamlConfiguration;
+import lombok.Getter;
+import lombok.Setter;
 
 public class ImmortalLogin extends JavaPlugin {
     private static final int RESOURCE_ID = 25481;
+    @Getter
     private ArrayList<UUID> gods = new ArrayList<>();
+    @Getter
     private HashMap<UUID, Integer> aggros = new HashMap<>();
+    @Getter
     private HashMap<UUID, Integer> timerTaskIDs = new HashMap<>();
+    @Getter
     private HashMap<UUID, Integer> ungodTaskIDs = new HashMap<>();
+    @Getter
+    @Setter
     private int seconds, minutes, hits;
+    @Getter
+    @Setter
     private FileConfiguration localization;
     private File configFile, localizationFile;
     private ImmortaLoginUtilities utilities = new ImmortaLoginUtilities(this);
+    @Getter
+    @Setter
     private NickManager nickManager;
-
+    @Getter
+    @Setter
+    private List<String> commandList = new ArrayList<>();
+    @Getter
+    @Setter
+    private boolean commandBlackList = true;
+    @Getter
+    @Setter
+    private boolean commandListEnabled = true;
+    
     @Override
     public void onDisable() {
         getGods().clear();
@@ -148,61 +170,5 @@ public class ImmortalLogin extends JavaPlugin {
 
     public void disable() {
         this.setEnabled(false);
-    }
-
-    public ArrayList<UUID> getGods() {
-        return gods;
-    }
-
-    public HashMap<UUID, Integer> getTimerTaskIDs() {
-        return timerTaskIDs;
-    }
-
-    public HashMap<UUID, Integer> getAggros() {
-        return aggros;
-    }
-
-    public int getMinutes() {
-        return minutes;
-    }
-
-    public void setMinutes(int minutes) {
-        this.minutes = minutes;
-    }
-
-    public int getSeconds() {
-        return seconds;
-    }
-
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
-    }
-
-    public int getHits() {
-        return hits;
-    }
-
-    public void setHits(int hits) {
-        this.hits = hits;
-    }
-
-    public FileConfiguration getLocalization() {
-        return localization;
-    }
-
-    public void setLocalization(FileConfiguration localization) {
-        this.localization = localization;
-    }
-
-    public NickManager getNickManager() {
-        return nickManager;
-    }
-
-    public void setNickManager(NickManager nickManager) {
-        this.nickManager = nickManager;
-    }
-
-    public HashMap<UUID, Integer> getUngodTaskIDs() {
-        return ungodTaskIDs;
     }
 }
