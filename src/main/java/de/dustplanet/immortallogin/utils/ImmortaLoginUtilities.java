@@ -70,7 +70,7 @@ public class ImmortaLoginUtilities {
 
     public void loadConfig() {
         // Add defaults
-        String commands[] = { "help", "rules", "motd" };
+        String[] commands = {"help", "rules", "motd"};
         FileConfiguration config = plugin.getConfig();
         config.addDefault("disableUpdater", false);
         config.addDefault("first-login.hits", 20);
