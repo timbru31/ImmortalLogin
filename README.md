@@ -1,7 +1,7 @@
 # ImmortalLogin
 [![Build Status](https://ci.dustplanet.de/buildStatus/icon?job=ImmortalLogin)](https://ci.dustplanet.de/job/ImmortalLogin/)
 [![Build Status](https://travis-ci.com/timbru31/ImmortalLogin.svg?token=xMwFbvUujsG645zQBus3&branch=master)](https://travis-ci.com/timbru31/ImmortalLogin)
-[![CircleCI](https://circleci.com/gh/timbru31/ImmortalLogin.svg?style=svg&circle-token=860d6f70236ec71322613da6ae103bba08577be7)](https://circleci.com/gh/timbru31/ImmortalLogin)
+[![CircleCI](https://img.shields.io/circleci/token/07c4ecd483c59e0d3d611a5c9f4599a8340a8777/project/github/timbru31/ImmortalLogin/master.svg)](https://circleci.com/gh/timbru31/ImmortalLogin)
 
 ## Info
 This CraftBukkit/Spigot plugin adds a temporary god mode for new players.  
