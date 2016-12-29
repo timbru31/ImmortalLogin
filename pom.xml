@@ -207,6 +207,20 @@
     </resources>
   </build>
 
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.7</version>
+        <configuration>
+          <linkXRef>false</linkXRef>
+          <targetJdk>1.7</targetJdk>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
   <!-- GitHub information -->
   <scm>
     <url>https://github.com/timbru31/ImmortalLogin</url>
