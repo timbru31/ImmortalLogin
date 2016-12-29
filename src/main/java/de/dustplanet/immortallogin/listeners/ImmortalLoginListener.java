@@ -2,6 +2,7 @@ package de.dustplanet.immortallogin.listeners;
 
 import java.util.UUID;
 
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -56,7 +57,7 @@ public class ImmortalLoginListener implements Listener {
         }
         Player player = (Player) event.getEntity();
         if (plugin.getGods().contains(player.getUniqueId())) {
-            player.setHealth(player.getMaxHealth());
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             player.setRemainingAir(player.getMaximumAir());
             player.setFireTicks(-1);
             event.setCancelled(true);
@@ -80,10 +81,10 @@ public class ImmortalLoginListener implements Listener {
                             plugin.getGods().remove(damager.getUniqueId());
                             plugin.getAggros().remove(damager.getUniqueId());
                             plugin.getServer().getScheduler()
-                                    .cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
+                            .cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
                             plugin.getTimerTaskIDs().remove(damager.getUniqueId());
                             plugin.getServer().getScheduler()
-                                    .cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
+                            .cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
                             plugin.getUngodTaskIDs().remove(damager.getUniqueId());
                             utilities.message(damager, "ungod");
                             if (plugin.getNickManager() != null) {
@@ -111,22 +112,21 @@ public class ImmortalLoginListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (plugin.isCommandListEnabled()) {
-            Player player = event.getPlayer();
-            UUID playerUUID = event.getPlayer().getUniqueId();
+        Player player = event.getPlayer();
+        UUID playerUUID = event.getPlayer().getUniqueId();
+        if (plugin.isCommandListEnabled() && plugin.getGods().contains(playerUUID)) {
             String message = event.getMessage();
             // Separate commands from the message
             String command = message.replaceFirst("/", "");
             if (command.contains(" ")) {
                 command = command.substring(0, command.indexOf(' '));
             }
-            if (plugin.getGods().contains(playerUUID)) {
-                if ((plugin.isCommandBlackList() && plugin.getCommandList().contains(command))
-                        || (!plugin.isCommandBlackList() && !plugin.getCommandList().contains(command))) {
-                    utilities.message(player, "commandNotAllowed");
-                    event.setCancelled(true);
-                }
+            if (plugin.isCommandBlackList() && plugin.getCommandList().contains(command)
+                    || !plugin.isCommandBlackList() && !plugin.getCommandList().contains(command)) {
+                utilities.message(player, "commandNotAllowed");
+                event.setCancelled(true);
             }
+
         }
     }
 }

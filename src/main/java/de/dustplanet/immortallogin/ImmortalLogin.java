@@ -151,7 +151,7 @@ public class ImmortalLogin extends JavaPlugin {
         final ImmortaLoginUtilities utilz = utilities;
         final int secondz = seconds;
         int taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            int i = 1;
+            private int i = 1;
             @Override
             public void run() {
                 int rest = (secondz - tempSubtract * i) / 60;
