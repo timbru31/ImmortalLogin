@@ -1,6 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>de.dustplanet</groupId>
+
+  <parent>
+    <groupId>de.dustplanet</groupId>
+    <artifactId>bukkit-plugin</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <relativePath />
+  </parent>
+
   <artifactId>ImmortalLogin</artifactId>
   <version>1.2.2-SNAPSHOT</version>
   <name>ImmortalLogin</name>
@@ -9,44 +16,25 @@
 
   <!-- Encode in UTF-8 -->
   <properties>
-    <build.number>-b${BUILD_NUMBER}</build.number>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   <plugin.name>ImmortalLogin</plugin.name>
+    <plugin.main>de.dustplanet.immortallogin.ImmortalLogin</plugin.main>
+    <jdk.version>1.8</jdk.version>
   </properties>
 
   <!-- Repositories -->
   <repositories>
     <repository>
-      <id>spigotmc-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+      <id>parent</id>
+      <url>https://repo.dustplanet.de/artifactory/bukkit-plugins/</url>
     </repository>
     <repository>
       <id>inventive-repo</id>
       <url>https://repo.inventivetalent.org/content/groups/public/</url>
     </repository>
-    <repository>
-      <id>dustplanet-snapshots</id>
-      <url>https://repo.dustplanet.de/artifactory/ext-snapshot-local/</url>
-    </repository>
   </repositories>
 
   <!-- Dependencies -->
   <dependencies>
-    <dependency>
-      <groupId>org.bukkit</groupId>
-      <artifactId>bukkit</artifactId>
-      <version>1.11.2-R0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.mcstats.bukkit</groupId>
-      <artifactId>metrics</artifactId>
-      <version>R8-SNAPSHOT</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>bukkit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
@@ -87,174 +75,5 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.16.12</version>
-      <scope>provided</scope>
-    </dependency>
   </dependencies>
-
- <build>
-    <!-- Compile for 1.8 and clean before -->
-    <defaultGoal>clean compile package</defaultGoal>
-    <finalName>ImmortalLogin</finalName>
-    <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.4.1</version>
-        <executions>
-          <execution>
-            <id>enforce-maven</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireMavenVersion>
-                  <version>[3.2,)</version>
-                </requireMavenVersion>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.6.0</version>
-        <configuration>
-          <verbose>true</verbose>
-          <source>1.8</source>
-          <target>1.8</target>
-          <compilerArgument>-Xlint:all</compilerArgument>
-          <showWarnings>true</showWarnings>
-          <showDeprecation>true</showDeprecation>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>com.github.wvengen</groupId>
-        <artifactId>proguard-maven-plugin</artifactId>
-        <version>2.0.13</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>proguard</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <obfuscate>true</obfuscate>
-          <options>
-            <option>-dontshrink</option>
-            <option>-keepattributes *Annotation*</option>
-            <option>-keep class de.dustplanet.immortallogin.ImmortalLogin</option>
-            <option>-keep class org.json.HTTPSTokener</option>
-            <option>-keep class org.json.HTTPTokenException</option>
-            <option>-keep class org.json.JSONReader</option>
-            <option>-keep class org.json.JSONBoolean</option>
-          </options>
-          <libs>
-            <lib>${java.home}/lib/rt.jar</lib>
-          </libs>
-        </configuration>
-      </plugin>
-
-      <!-- Shade Plugin to include Metrics -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.3</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <artifactSet>
-                <includes>
-                  <include>org.mcstats.bukkit:metrics</include>
-                  <include>org.json:json</include>
-                </includes>
-              </artifactSet>
-              <!-- Set the final name -->
-              <finalName>ImmortalLogin</finalName>
-              <relocations>
-                <relocation>
-                  <pattern>org.mcstats</pattern>
-                  <shadedPattern>de.dustplanet.immortallogin</shadedPattern>
-                </relocation>
-              </relocations>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
-      </plugin>
-    </plugins>
-
-    <!-- Include the .yml files -->
-    <resources>
-      <resource>
-        <targetPath>.</targetPath>
-        <filtering>true</filtering>
-        <directory>${basedir}/src/main/resources</directory>
-        <includes>
-          <include>plugin.yml</include>
-          <include>config.yml</include>
-          <include>localization.yml</include>
-        </includes>
-      </resource>
-      <resource>
-        <targetPath>.</targetPath>
-        <filtering>true</filtering>
-        <directory>${basedir}</directory>
-        <includes>
-          <include>README.md</include>
-          <include>LICENSE.md</include>
-        </includes>
-      </resource>
-    </resources>
-  </build>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <version>2.5</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.7</version>
-        <configuration>
-          <targetJdk>1.8</targetJdk>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
-
-  <!-- GitHub information -->
-  <scm>
-    <url>https://github.com/timbru31/ImmortalLogin</url>
-    <connection>scm:git:git://github.com/timbru31/ImmortalLogin.git</connection>
-    <tag>master</tag>
-    <developerConnection>scm:git:git@github.com:timbru31/ImmortalLogin.git</developerConnection>
-  </scm>
-
-  <!-- Jenkins information -->
-  <ciManagement>
-    <url>https://ci.dustplanet.de/job/ImmortalLogin</url>
-    <system>jenkins</system>
-  </ciManagement>
 </project>
