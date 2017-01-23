@@ -16,7 +16,7 @@
 
   <!-- Encode in UTF-8 -->
   <properties>
-   <plugin.name>ImmortalLogin</plugin.name>
+    <plugin.name>ImmortalLogin</plugin.name>
     <plugin.main>de.dustplanet.immortallogin.ImmortalLogin</plugin.main>
     <jdk.version>1.8</jdk.version>
   </properties>
