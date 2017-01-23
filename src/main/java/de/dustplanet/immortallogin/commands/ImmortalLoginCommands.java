@@ -30,6 +30,17 @@ public class ImmortalLoginCommands implements CommandExecutor {
                 if (sender instanceof Player) {
                     Player player = (Player) sender;
                     if (gods.contains(player.getUniqueId())) {
+                        // Hook into the pending confirmation list
+                        if (plugin.isConfirmation()) {
+                            UUID playerName = player.getUniqueId();
+                            // Notify the player and cancel event
+                            if (!plugin.getPendingConfirmationList().contains(playerName)) {
+                                plugin.getPendingConfirmationList().add(playerName);
+                                utilities.message(sender, "confirmationPending");
+                                return true;
+                            }
+                            plugin.getPendingConfirmationList().remove(playerName);
+                        }
                         utilities.message(sender, "ungod");
                         gods.remove(player.getUniqueId());
                         plugin.getServer().getScheduler().cancelTask(plugin.getTimerTaskIDs().get(player.getUniqueId()));

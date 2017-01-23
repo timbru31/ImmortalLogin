@@ -11,3 +11,4 @@ noPermission: '&5[ImmortalLogin] &4You do not have the permission to use this co
 noActiveGods: '&5[ImmortalLogin] &4There are no active players in god mode.'
 activeGods: '&5[ImmortalLogin] &2There are &e%players% &2active players in god mode:'
 commandNotAllowed: '&5[ImmortalLogin] &4This command is not allowed in god mode!'
+confirmationPending: '&5[ImmortalLogin] &4Are you sure? &ePlease type /im again, to leave the god mode early.'

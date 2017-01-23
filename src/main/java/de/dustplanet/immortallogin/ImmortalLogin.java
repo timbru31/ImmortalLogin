@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.inventivetalent.nicknamer.api.NickManager;
 import org.inventivetalent.nicknamer.api.NickNamerAPI;
 
@@ -24,6 +25,7 @@ import lombok.Setter;
 
 public class ImmortalLogin extends JavaPlugin {
     private static final int RESOURCE_ID = 25481;
+    private static final long TICKS_PER_SECOND = 20L;
     @Getter
     private ArrayList<UUID> gods = new ArrayList<>();
     @Getter
@@ -52,11 +54,21 @@ public class ImmortalLogin extends JavaPlugin {
     @Getter
     @Setter
     private boolean commandListEnabled = true;
+    @Getter
+    private ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
+    @Getter
+    @Setter
+    private boolean confirmation;
+    private BukkitTask confirmationCleanupTask;
 
     @Override
     public void onDisable() {
         getGods().clear();
         getAggros().clear();
+        getPendingConfirmationList().clear();
+        if (confirmationCleanupTask != null) {
+            confirmationCleanupTask.cancel();
+        }
         for (int taskID : getTimerTaskIDs().values()) {
             getServer().getScheduler().cancelTask(taskID);
         }
@@ -112,6 +124,7 @@ public class ImmortalLogin extends JavaPlugin {
             }
         }
 
+        registerConfirmationCleanupTask();
     }
 
     public void setGod(final Player player) {
@@ -165,7 +178,20 @@ public class ImmortalLogin extends JavaPlugin {
         getTimerTaskIDs().put(player.getUniqueId(), taskID);
     }
 
-    public JavaPlugin getPlugin() {
+    private void registerConfirmationCleanupTask() {
+        // Task if needed
+        if (isConfirmation()) {
+            confirmationCleanupTask = getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
+                @Override
+                public void run() {
+                    // Clear pending list
+                    getPendingConfirmationList().clear();
+                }
+            }, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND);
+        }
+    }
+
+    public ImmortalLogin getPlugin() {
         return this;
     }
 

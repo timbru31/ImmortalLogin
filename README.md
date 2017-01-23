@@ -24,6 +24,9 @@ disableUpdater: false
 first-login:
   hits: 20
   seconds: 1200
+confirmation:
+  enabled: false
+  delay: 30
 nickColor: 'DARK_PURPLE'
 commandListEnabled: true
 # Toggle between a black and a whitelist (false means whitelist)
@@ -36,12 +39,15 @@ commandList:
 
 ## Permissions
 
-* none
+| Permission              | Description                   |
+|:-----------------------:|:-----------------------------:|
+| immortallogin.list.gods | Lists all players in god mode |
+
 
 ## Commands
-| Command | Aliases | Description | Permission node |
-|:----------:|:----------:|:----------:|:----------:|
-| immortallogin | immortal, im | Ends the God mode before the limit | - |
+| Command       | Aliases      | Description                        | Permission node |
+|:-------------:|:------------:|:----------------------------------:|:---------------:|
+| immortallogin | immortal, im | Ends the God mode before the limit | -               |
 
 ## Support
 For support visit the SpigotMC page: https://www.spigotmc.org/resources/25481/

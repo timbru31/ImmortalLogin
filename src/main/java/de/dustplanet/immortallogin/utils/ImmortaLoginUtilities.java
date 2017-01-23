@@ -75,6 +75,8 @@ public class ImmortaLoginUtilities {
         config.addDefault("disableUpdater", false);
         config.addDefault("first-login.hits", 20);
         config.addDefault("first-login.seconds", 1200);
+        config.addDefault("confirmation.enabled", false);
+        config.addDefault("confirmation.delay", 30);
         config.addDefault("nickColor", "DARK_PURPLE");
         config.addDefault("commandListEnabled", true);
         config.addDefault("commandListBlacklist", true);
@@ -92,6 +94,7 @@ public class ImmortaLoginUtilities {
         plugin.setCommandBlackList(config.getBoolean("commandListBlacklist", true));
         plugin.setCommandListEnabled(config.getBoolean("commandListEnabled", true));
         plugin.setCommandList(config.getStringList("commandList"));
+        plugin.setConfirmation(config.getBoolean("confirmation.enabled"));
     }
 
     public void saveLocalization(FileConfiguration localization, File localizationFile) {
@@ -121,6 +124,7 @@ public class ImmortaLoginUtilities {
         localization.addDefault("noActiveGods", "&5[ImmortalLogin] &4There are no active players in god mode.");
         localization.addDefault("activeGods", "&5[ImmortalLogin] &2There are &e%players% &2active players in god mode:");
         localization.addDefault("commandNotAllowed", "&5[ImmortalLogin] &4This command is not allowed in god mode!");
+        localization.addDefault("confirmationPending", "&5[ImmortalLogin] &4Are you sure? &ePlease type /im again, to leave the god mode early.");
         localization.options().copyDefaults(true);
         saveLocalization(localization, localizationFile);
     }
