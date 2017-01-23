@@ -76,4 +76,43 @@
       </exclusions>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>obfuscate</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.wvengen</groupId>
+            <artifactId>proguard-maven-plugin</artifactId>
+            <version>${proguard.version}</version>
+            <executions>
+              <execution>
+                <phase>package</phase>
+                <goals>
+                  <goal>proguard</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <obfuscate>true</obfuscate>
+              <options>
+                <option>-dontshrink</option>
+                <option>-keepattributes *Annotation*</option>
+                <option>-keep class ${plugin.main}</option>
+                <option>-keep class org.json.HTTPSTokener</option>
+                <option>-keep class org.json.HTTPSTokenNormalizer</option>
+                <option>-keep class org.json.HTTPTokenException</option>
+                <option>-keep class org.json.JSONReader</option>
+                <option>-keep class org.json.JSONBoolean</option>
+              </options>
+              <libs>
+                <lib>${java.home}/lib/rt.jar</lib>
+              </libs>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
