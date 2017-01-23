@@ -115,4 +115,12 @@
       </build>
     </profile>
   </profiles>
+
+  <!-- Maven is broken, so add scm duplicatio to child -->
+  <scm>
+    <url>https://github.com/timbru31/ImmortalLogin</url>
+    <connection>scm:git:git://github.com/timbru31/ImmortalLogin.git</connection>
+    <developerConnection>scm:git:git@github.com:timbru31/ImmortalLogin.git</developerConnection>
+    <tag>master</tag>
+  </scm>
 </project>
