@@ -79,7 +79,7 @@
 
   <profiles>
     <profile>
-      <id>obfuscate</id>
+      <id>disguise</id>
       <build>
         <plugins>
           <plugin>
