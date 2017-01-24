@@ -79,7 +79,7 @@
 
   <profiles>
     <profile>
-      <id>disguise</id>
+      <id>obfuscate</id>
       <build>
         <plugins>
           <plugin>
@@ -100,11 +100,7 @@
                 <option>-dontshrink</option>
                 <option>-keepattributes *Annotation*</option>
                 <option>-keep class ${plugin.main}</option>
-                <option>-keep class org.json.HTTPSTokener</option>
-                <option>-keep class org.json.HTTPSTokenNormalizer</option>
-                <option>-keep class org.json.HTTPTokenException</option>
-                <option>-keep class org.json.JSONBoolean</option>
-                <option>-keep class org.json.JSONReader</option>
+                <option>-keep class org.json.** { *; }</option>
               </options>
               <libs>
                 <lib>${java.home}/lib/rt.jar</lib>
