@@ -7,11 +7,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 
+import org.bstats.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.json.HTTPSTokenNormalizer;
-import org.mcstats.Metrics;
 
 import de.dustplanet.immortallogin.ImmortalLogin;
 import de.dustplanet.immortallogin.utils.Updater.UpdateResult;
@@ -54,13 +54,7 @@ public class ImmortaLoginUtilities {
     }
 
     public void trackMetrics() {
-        try {
-            Metrics metrics = new Metrics(plugin);
-            metrics.start();
-        } catch (IOException e) {
-            plugin.getLogger().info("Couldn't start Metrics, please report this!");
-            e.printStackTrace();
-        }
+        new Metrics(plugin);
     }
 
     public void startPiracyTask() {

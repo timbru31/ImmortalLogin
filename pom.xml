@@ -4,7 +4,7 @@
   <parent>
     <groupId>de.dustplanet</groupId>
     <artifactId>bukkit-plugin</artifactId>
-    <version>0.1.4-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -16,8 +16,10 @@
 
   <!-- Encode in UTF-8 -->
   <properties>
+    <obfuscate.options>-keep class org.json.** { *; }</obfuscate.options>
     <plugin.name>ImmortalLogin</plugin.name>
     <plugin.main>de.dustplanet.immortallogin.ImmortalLogin</plugin.main>
+    <plugin.package>de.dustplanet.immortallogin</plugin.package>
     <jdk.version>1.8</jdk.version>
   </properties>
 
@@ -77,42 +79,7 @@
     </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>obfuscate</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.github.wvengen</groupId>
-            <artifactId>proguard-maven-plugin</artifactId>
-            <version>${proguard.version}</version>
-            <executions>
-              <execution>
-                <phase>package</phase>
-                <goals>
-                  <goal>proguard</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <obfuscate>true</obfuscate>
-              <options>
-                <option>-dontshrink</option>
-                <option>-keepattributes *Annotation*</option>
-                <option>-keep class ${plugin.main}</option>
-                <option>-keep class org.json.** { *; }</option>
-              </options>
-              <libs>
-                <lib>${java.home}/lib/rt.jar</lib>
-              </libs>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
-  <!-- Maven is broken, so add scm duplicatio to child -->
+  <!-- Maven is broken, so add scm duplication to child -->
   <scm>
     <url>https://github.com/timbru31/ImmortalLogin</url>
     <connection>scm:git:git://github.com/timbru31/ImmortalLogin.git</connection>

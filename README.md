@@ -9,7 +9,7 @@ Per default the players are invulnerable for 20 minutes, unless the do not attac
 After a certain amount of hits against other players or anytime sooner by issuing /im the god mode will be disabled.
 
 *Third party features, all of them can be disabled*
-* Metrics for usage statistics
+* bStats for usage statistics
 
 ## License
 
@@ -53,29 +53,29 @@ commandList:
 For support visit the SpigotMC page: https://www.spigotmc.org/resources/25481/
 
 ## Usage statistics
-[![MCStats](http://mcstats.org/signature/ImmortalLogin.png)](http://mcstats.org/plugin/ImmortalLogin)
 
-## Data usage collection of Metrics
+_stats images are returning soon!_
 
-#### Disabling Metrics
-The file ../plugins/Plugin Metrics/config.yml contains an option to *opt-out*
+## Data usage collection of bStats
 
-#### The following data is **read** from the server in some way or another
-* File Contents of plugins/Plugin Metrics/config.yml (created if not existent)
-* Players currently online (not max player count)
-* Server version string (the same version string you see in /version)
-* Plugin version of the metrics-supported plugin
-* Mineshafter status - it does not properly propagate Metrics requests however it is a very simple check and does not read the filesystem
+#### Disabling bStats
+The file ../plugins/bStats/config.yml contains an option to opt-out
 
-#### The following data is **sent** to http://mcstats.org and can be seen under http://mcstats.org/plugin/ImmortalLogin
-* Metrics revision of the implementing class
-* Server's GUID
-* Players currently online (not max player count)
-* Server version string (the same version string you see in /version)
-* Plugin version of the metrics-supported plugin
+### The following data is **read and sent** to http://mcstats.org and can be seen under https://bstats.org/plugin/bukkit/SilkSpawnersShopAddon
+* Your server's randomly generated UUID
+* The amount of players on your server
+* The online mode of your server
+* The bukkit version of your server
+* The java version of your system (e.g. Java 8)
+* The name of your OS (e.g. Windows)
+* The version of your OS
+* The architecture of your OS (e.g. amd64)
+* The system cores of your OS (e.g. 8)
+* bStats-supported plugins
+* Plugin version of bStats-supported plugins
 
 ## Donation
 [![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif "Donation via PayPal")](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T9TEV7Q88B9M2)
 
-![BitCoin](https://dl.dropboxusercontent.com/u/26476995/bitcoin_logo.png "Donation via BitCoins")
+![BitCoin](https://dl.dropboxusercontent.com/u/26476995/bitcoin_logo.png "Donation via BitCoins")  
 Address: 1NnrRgdy7CfiYN63vKHiypSi3MSctCP55C

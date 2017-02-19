@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -27,13 +28,13 @@ public class ImmortalLogin extends JavaPlugin {
     private static final int RESOURCE_ID = 25481;
     private static final long TICKS_PER_SECOND = 20L;
     @Getter
-    private ArrayList<UUID> gods = new ArrayList<>();
+    private List<UUID> gods = new ArrayList<>();
     @Getter
-    private HashMap<UUID, Integer> aggros = new HashMap<>();
+    private Map<UUID, Integer> aggros = new HashMap<>();
     @Getter
-    private HashMap<UUID, Integer> timerTaskIDs = new HashMap<>();
+    private Map<UUID, Integer> timerTaskIDs = new HashMap<>();
     @Getter
-    private HashMap<UUID, Integer> ungodTaskIDs = new HashMap<>();
+    private Map<UUID, Integer> ungodTaskIDs = new HashMap<>();
     @Getter
     @Setter
     private int seconds, minutes, hits;
@@ -55,7 +56,7 @@ public class ImmortalLogin extends JavaPlugin {
     @Setter
     private boolean commandListEnabled = true;
     @Getter
-    private ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
+    private List<UUID> pendingConfirmationList = new ArrayList<>();
     @Getter
     @Setter
     private boolean confirmation;

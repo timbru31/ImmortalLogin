@@ -1,6 +1,6 @@
 package de.dustplanet.immortallogin.commands;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,7 +24,7 @@ public class ImmortalLoginCommands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        ArrayList<UUID> gods = plugin.getGods();
+        List<UUID> gods = plugin.getGods();
         switch (args.length) {
             case 0:
                 if (sender instanceof Player) {
