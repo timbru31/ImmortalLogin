@@ -61,7 +61,7 @@ _stats images are returning soon!_
 #### Disabling bStats
 The file ../plugins/bStats/config.yml contains an option to opt-out
 
-### The following data is **read and sent** to http://mcstats.org and can be seen under https://bstats.org/plugin/bukkit/SilkSpawnersShopAddon
+#### The following data is **read and sent** to http://mcstats.org and can be seen under https://bstats.org/plugin/bukkit/SilkSpawnersShopAddon
 * Your server's randomly generated UUID
 * The amount of players on your server
 * The online mode of your server
