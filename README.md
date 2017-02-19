@@ -59,9 +59,9 @@ _stats images are returning soon!_
 ## Data usage collection of bStats
 
 #### Disabling bStats
-The file ../plugins/bStats/config.yml contains an option to opt-out
+The file _../plugins/bStats/config.yml_ contains an option to opt-out
 
-#### The following data is **read and sent** to http://mcstats.org and can be seen under https://bstats.org/plugin/bukkit/SilkSpawnersShopAddon
+#### The following data is **read and sent** to https://bstats.org and can be seen under https://bstats.org/plugin/bukkit/ImmortalLogin
 * Your server's randomly generated UUID
 * The amount of players on your server
 * The online mode of your server
