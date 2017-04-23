@@ -26,7 +26,7 @@ import lombok.Setter;
 
 public class ImmortalLogin extends JavaPlugin {
     private static final int RESOURCE_ID = 25481;
-    private static final long TICKS_PER_SECOND = 20L;
+    public static final long TICKS_PER_SECOND = 20L;
     @Getter
     private List<UUID> gods = new ArrayList<>();
     @Getter
@@ -83,7 +83,6 @@ public class ImmortalLogin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Config
         configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             if (configFile.getParentFile().mkdirs()) {
@@ -98,7 +97,6 @@ public class ImmortalLogin extends JavaPlugin {
 
         utilities.loadConfig();
 
-        // Localization
         localizationFile = new File(getDataFolder(), "localization.yml");
         if (!localizationFile.exists()) {
             utilities.copy("localization.yml", localizationFile);
@@ -140,32 +138,30 @@ public class ImmortalLogin extends JavaPlugin {
         }
         final ImmortaLoginUtilities utilz = utilities;
         final NickManager _nickManager = getNickManager();
-        int ungodTaskID = getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
-            @Override
-            public void run() {
-                if (getGods().contains(player.getUniqueId())) {
-                    utilz.message(player, "ungod");
-                    getGods().remove(player.getUniqueId());
-                    getServer().getScheduler().cancelTask(getTimerTaskIDs().get(player.getUniqueId()));
-                    getTimerTaskIDs().remove(player.getUniqueId());
-                    getUngodTaskIDs().remove(player.getUniqueId());
-                    if (_nickManager != null) {
-                        _nickManager.removeNick(player.getUniqueId());
-                        _nickManager.removeSkin(player.getUniqueId());
-                    }
+        int ungodTaskID = getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
+            if (getGods().contains(player.getUniqueId())) {
+                utilz.message(player, "ungod");
+                getGods().remove(player.getUniqueId());
+                getServer().getScheduler().cancelTask(getTimerTaskIDs().get(player.getUniqueId()));
+                getTimerTaskIDs().remove(player.getUniqueId());
+                getUngodTaskIDs().remove(player.getUniqueId());
+                if (_nickManager != null) {
+                    _nickManager.removeNick(player.getUniqueId());
+                    _nickManager.removeSkin(player.getUniqueId());
                 }
             }
-        }, getSeconds() * (long) 20);
+        }, getSeconds() * TICKS_PER_SECOND);
         getUngodTaskIDs().put(player.getUniqueId(), ungodTaskID);
     }
 
     private void addTimer(final Player player) {
         final int tempSubtract = seconds / 4;
-        long delay = seconds / 4 * 20L;
+        long delay = seconds / 4 * TICKS_PER_SECOND;
         final ImmortaLoginUtilities utilz = utilities;
         final int secondz = seconds;
         int taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
             private int i = 1;
+
             @Override
             public void run() {
                 int rest = (secondz - tempSubtract * i) / 60;
@@ -180,15 +176,10 @@ public class ImmortalLogin extends JavaPlugin {
     }
 
     private void registerConfirmationCleanupTask() {
-        // Task if needed
         if (isConfirmation()) {
-            confirmationCleanupTask = getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
-                @Override
-                public void run() {
-                    // Clear pending list
-                    getPendingConfirmationList().clear();
-                }
-            }, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND);
+            long delay = getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND;
+            confirmationCleanupTask = getServer().getScheduler().runTaskTimerAsynchronously(this,
+                    () -> getPendingConfirmationList().clear(), delay, delay);
         }
     }
 

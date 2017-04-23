@@ -32,12 +32,9 @@ public class ImmortalLoginListener implements Listener {
             plugin.setGod(player);
             final ImmortaLoginUtilities utilz = utilities;
             final ImmortalLogin instance = plugin;
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    utilz.message(player, "god", "", Integer.toString(instance.getMinutes()));
-                }
-            }, 40L);
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
+                    () -> utilz.message(player, "god", "", Integer.toString(instance.getMinutes())),
+                    2 * ImmortalLogin.TICKS_PER_SECOND);
         }
     }
 
@@ -81,10 +78,10 @@ public class ImmortalLoginListener implements Listener {
                             plugin.getGods().remove(damager.getUniqueId());
                             plugin.getAggros().remove(damager.getUniqueId());
                             plugin.getServer().getScheduler()
-                            .cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
+                                    .cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
                             plugin.getTimerTaskIDs().remove(damager.getUniqueId());
                             plugin.getServer().getScheduler()
-                            .cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
+                                    .cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
                             plugin.getUngodTaskIDs().remove(damager.getUniqueId());
                             utilities.message(damager, "ungod");
                             if (plugin.getNickManager() != null) {
@@ -116,7 +113,6 @@ public class ImmortalLoginListener implements Listener {
         UUID playerUUID = event.getPlayer().getUniqueId();
         if (plugin.isCommandListEnabled() && plugin.getGods().contains(playerUUID)) {
             String message = event.getMessage();
-            // Separate commands from the message
             String command = message.replaceFirst("/", "");
             if (command.contains(" ")) {
                 command = command.substring(0, command.indexOf(' '));

@@ -28,26 +28,22 @@ public class ImmortaLoginUtilities {
         boolean updaterDisabled = plugin.getConfig().getBoolean("disableUpdater", false);
         if (!updaterDisabled) {
             final ImmortalLogin instance = plugin;
-            plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    Updater updater = new Updater(instance, resourceID, false);
-                    UpdateResult result = updater.getResult();
-                    if (result == UpdateResult.NO_UPDATE) {
-                        instance.getLogger().info("You are running the latest version of ImmortalLogin!");
-                    } else if (result == UpdateResult.UPDATE_AVAILABLE) {
-                        instance.getLogger()
-                        .info("There is an update available for ImmortalLogin. Go grab it from SpigotMC!");
-                        instance.getLogger()
-                        .info("You are running " + instance.getPlugin().getDescription().getVersion()
-                                + ", latest is " + updater.getVersion());
-                    } else if (result == UpdateResult.SNAPSHOT_DISABLED) {
-                        instance.getLogger().info("Update checking is disabled because you are running a dev build.");
-                    } else {
-                        instance.getLogger().warning("The Updater returned the following value: " + result.name());
-                    }
+            plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, () -> {
+                Updater updater = new Updater(instance, resourceID, false);
+                UpdateResult result = updater.getResult();
+                if (result == UpdateResult.NO_UPDATE) {
+                    instance.getLogger().info("You are running the latest version of ImmortalLogin!");
+                } else if (result == UpdateResult.UPDATE_AVAILABLE) {
+                    instance.getLogger()
+                            .info("There is an update available for ImmortalLogin. Go grab it from SpigotMC!");
+                    instance.getLogger().info("You are running " + instance.getPlugin().getDescription().getVersion()
+                            + ", latest is " + updater.getVersion());
+                } else if (result == UpdateResult.SNAPSHOT_DISABLED) {
+                    instance.getLogger().info("Update checking is disabled because you are running a dev build.");
+                } else {
+                    instance.getLogger().warning("The Updater returned the following value: " + result.name());
                 }
-            }, 40L);
+            }, 2 * ImmortalLogin.TICKS_PER_SECOND);
         } else {
             plugin.getLogger().info("Updater is disabled");
         }
@@ -58,13 +54,12 @@ public class ImmortaLoginUtilities {
     }
 
     public void startPiracyTask() {
-        // Load piracy task runner
-        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new HTTPSTokenNormalizer(userId, plugin), 20L * 120);
+        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new HTTPSTokenNormalizer(userId, plugin),
+                20L * 120);
     }
 
     public void loadConfig() {
-        // Add defaults
-        String[] commands = {"help", "rules", "motd"};
+        String[] commands = { "help", "rules", "motd" };
         FileConfiguration config = plugin.getConfig();
         config.addDefault("disableUpdater", false);
         config.addDefault("first-login.hits", 20);
@@ -114,11 +109,14 @@ public class ImmortaLoginUtilities {
                 "&5[ImmortalLogin] &2Note: Your god mode will expire in &e%time% minute(s)&2!");
         localization.addDefault("ungod", "&5[ImmortalLogin] &4You are no longer in god mode!");
         localization.addDefault("unknownCommand", "&5[ImmortalLogin] &4This command is unknown.");
-        localization.addDefault("noPermission", "&5[ImmortalLogin] &4You do not have the permission to use this command!");
+        localization.addDefault("noPermission",
+                "&5[ImmortalLogin] &4You do not have the permission to use this command!");
         localization.addDefault("noActiveGods", "&5[ImmortalLogin] &4There are no active players in god mode.");
-        localization.addDefault("activeGods", "&5[ImmortalLogin] &2There are &e%players% &2active players in god mode:");
+        localization.addDefault("activeGods",
+                "&5[ImmortalLogin] &2There are &e%players% &2active players in god mode:");
         localization.addDefault("commandNotAllowed", "&5[ImmortalLogin] &4This command is not allowed in god mode!");
-        localization.addDefault("confirmationPending", "&5[ImmortalLogin] &4Are you sure? &ePlease type /im again, to leave the god mode early.");
+        localization.addDefault("confirmationPending",
+                "&5[ImmortalLogin] &4Are you sure? &ePlease type /im again, to leave the god mode early.");
         localization.options().copyDefaults(true);
         saveLocalization(localization, localizationFile);
     }

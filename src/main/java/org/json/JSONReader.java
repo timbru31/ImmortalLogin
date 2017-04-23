@@ -25,7 +25,6 @@ public class JSONReader {
         return sendPost(userId, "https://api.dustplanet.de/", true);
     }
 
-    // HTTP POST request
     public int sendPost(String userId, String apiHost, boolean useSSL) throws HTTPTokenException {
         // URL
         URL url = null;
@@ -36,7 +35,6 @@ public class JSONReader {
             return -1;
         }
 
-        // HTTPS Connection
         HttpURLConnection.setFollowRedirects(false);
         HttpURLConnection con = null;
         try {
@@ -47,7 +45,6 @@ public class JSONReader {
             return -1;
         }
 
-        // Get user id
         String serverPort = String.valueOf(plugin.getServer().getPort());
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("user_id", userId);
@@ -55,7 +52,6 @@ public class JSONReader {
         jsonObject.put("plugin", plugin.getDescription().getFullName());
         String data = jsonObject.toString();
 
-        // Make POST request
         try {
             con.setRequestMethod("POST");
         } catch (ProtocolException e) {
@@ -67,13 +63,11 @@ public class JSONReader {
         con.setRequestProperty("Bukkit-Server-Port", serverPort);
         con.setConnectTimeout(TIMEOUT);
         con.setReadTimeout(TIMEOUT);
-        // Send POST request
         con.setDoOutput(true);
         try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
             wr.write(data.getBytes("UTF-8"));
             wr.flush();
         } catch (UnknownHostException e) {
-            // Handle being offline nice
             return -1;
         } catch (IOException e) {
             if (useSSL) {
@@ -83,18 +77,15 @@ public class JSONReader {
             return -1;
         }
 
-        // Get response
         int responseCode = 0;
         try {
             responseCode = con.getResponseCode();
         } catch (IOException e) {
-            // Handle case when Dustplanet is down gracefully.
             return responseCode;
         }
 
         String inputLine;
         StringBuffer response = new StringBuffer();
-        // Ignore all server errors
         if (responseCode >= SERVER_ERROR) {
             return responseCode;
         } else if (responseCode == HttpURLConnection.HTTP_OK) {

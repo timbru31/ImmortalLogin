@@ -30,10 +30,8 @@ public class ImmortalLoginCommands implements CommandExecutor {
                 if (sender instanceof Player) {
                     Player player = (Player) sender;
                     if (gods.contains(player.getUniqueId())) {
-                        // Hook into the pending confirmation list
                         if (plugin.isConfirmation()) {
                             UUID playerName = player.getUniqueId();
-                            // Notify the player and cancel event
                             if (!plugin.getPendingConfirmationList().contains(playerName)) {
                                 plugin.getPendingConfirmationList().add(playerName);
                                 utilities.message(sender, "confirmationPending");
@@ -43,9 +41,11 @@ public class ImmortalLoginCommands implements CommandExecutor {
                         }
                         utilities.message(sender, "ungod");
                         gods.remove(player.getUniqueId());
-                        plugin.getServer().getScheduler().cancelTask(plugin.getTimerTaskIDs().get(player.getUniqueId()));
+                        plugin.getServer().getScheduler()
+                                .cancelTask(plugin.getTimerTaskIDs().get(player.getUniqueId()));
                         plugin.getTimerTaskIDs().remove(player.getUniqueId());
-                        plugin.getServer().getScheduler().cancelTask(plugin.getUngodTaskIDs().get(player.getUniqueId()));
+                        plugin.getServer().getScheduler()
+                                .cancelTask(plugin.getUngodTaskIDs().get(player.getUniqueId()));
                         plugin.getUngodTaskIDs().remove(player.getUniqueId());
                     } else {
                         utilities.message(sender, "notInGodMode");
@@ -60,7 +60,9 @@ public class ImmortalLoginCommands implements CommandExecutor {
                         if (gods.isEmpty()) {
                             utilities.message(sender, "noActiveGods");
                         } else {
-                            String activeGods = gods.stream().map(e -> ChatColor.YELLOW + plugin.getServer().getPlayer(e).getName()).collect(Collectors.joining(", "));
+                            String activeGods = gods.stream()
+                                    .map(e -> ChatColor.YELLOW + plugin.getServer().getPlayer(e).getName())
+                                    .collect(Collectors.joining(", "));
                             utilities.message(sender, "activeGods", Integer.toString(gods.size()));
                             sender.sendMessage(activeGods);
                         }
