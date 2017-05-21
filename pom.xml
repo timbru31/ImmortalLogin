@@ -79,24 +79,6 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.0.2</version>
-        <configuration>
-          <archive>
-            <index>true</index>
-            <manifestEntries>
-              <timestamp>%%__USER__%%</timestamp>
-            </manifestEntries>
-          </archive>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
   <!-- Maven is broken, so add scm duplication to child -->
   <scm>
     <url>https://github.com/timbru31/ImmortalLogin</url>
