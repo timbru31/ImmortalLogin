@@ -105,7 +105,6 @@ public class ImmortalLogin extends JavaPlugin {
         setLocalization(ScalarYamlConfiguration.loadConfiguration(localizationFile));
         utilities.loadLocalization(getLocalization(), localizationFile);
 
-        utilities.startPiracyTask();
         utilities.checkForUpdate(RESOURCE_ID);
         utilities.trackMetrics();
 

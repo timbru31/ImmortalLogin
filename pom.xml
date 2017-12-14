@@ -9,14 +9,13 @@
   </parent>
 
   <artifactId>ImmortalLogin</artifactId>
-  <version>1.3.3-SNAPSHOT</version>
+  <version>1.4.0-SNAPSHOT</version>
   <name>ImmortalLogin</name>
   <description>A temporary god mode for new players</description>
   <url>https://www.spigotmc.org/resources/25481/</url>
 
   <!-- Encode in UTF-8 -->
   <properties>
-    <obfuscate.options>-keep class org.json.** { *; }</obfuscate.options>
     <plugin.name>ImmortalLogin</plugin.name>
     <plugin.main>de.dustplanet.immortallogin.ImmortalLogin</plugin.main>
     <plugin.package>de.dustplanet.immortallogin</plugin.package>
@@ -37,11 +36,6 @@
 
   <!-- Dependencies -->
   <dependencies>
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20160810</version>
-    </dependency>
     <dependency>
       <groupId>org.inventivetalent.nicknamer</groupId>
       <artifactId>api</artifactId>

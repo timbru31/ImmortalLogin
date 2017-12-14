@@ -11,14 +11,12 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.json.HTTPSTokenNormalizer;
 
 import de.dustplanet.immortallogin.ImmortalLogin;
 import de.dustplanet.immortallogin.utils.Updater.UpdateResult;
 
 public class ImmortaLoginUtilities {
     private ImmortalLogin plugin;
-    private String userId = "%%__USER__%%";
 
     public ImmortaLoginUtilities(ImmortalLogin instance) {
         plugin = instance;
@@ -51,11 +49,6 @@ public class ImmortaLoginUtilities {
 
     public void trackMetrics() {
         new Metrics(plugin);
-    }
-
-    public void startPiracyTask() {
-        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new HTTPSTokenNormalizer(userId, plugin),
-                20L * 120);
     }
 
     public void loadConfig() {
