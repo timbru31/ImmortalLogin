@@ -11,13 +11,6 @@ After a certain amount of hits against other players or anytime sooner by issuin
 *Third party features, all of them can be disabled*
 * bStats for usage statistics
 
-## License
-
-This plugin is released under closed source.
-You do not have the permission to redistribute, share, sell or make this plugin in any other way available for others.
-Please not that decompilation is a violation of this license.
-One purchase is valid for one server, if you plan to use it on multiple servers you will need to purchase the resource again.
-
 ## Standard config
 ```yaml
 disableUpdater: false
@@ -73,3 +66,6 @@ The file `./plugins/bStats/config.yml` contains an option to *opt-out*.
 * The system cores of your OS (e.g. 8)
 * bStats-supported plugins
 * Plugin version of bStats-supported plugins
+
+---
+Built by (c) Tim Brust and contributors. Released under the MIT license.
