@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -126,11 +125,7 @@ public class ImmortalLogin extends JavaPlugin {
     }
 
     public void setGod(final Player player) {
-        try {
-            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-        } catch (NoClassDefFoundError e) {
-            player.setHealth(player.getMaxHealth());
-        }
+        utilities.setMaxHealth(player);
         getGods().add(player.getUniqueId());
         addTimer(player);
 

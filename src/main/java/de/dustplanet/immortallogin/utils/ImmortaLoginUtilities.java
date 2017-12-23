@@ -9,8 +9,10 @@ import java.util.Arrays;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import de.dustplanet.immortallogin.ImmortalLogin;
 import de.dustplanet.immortallogin.utils.Updater.UpdateResult;
@@ -145,5 +147,14 @@ public class ImmortaLoginUtilities {
             }
         }
         sender.sendMessage(localizedMessage);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void setMaxHealth(final Player player) {
+        try {
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        } catch (NoClassDefFoundError e) {
+            player.setHealth(player.getMaxHealth());
+        }
     }
 }

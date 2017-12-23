@@ -2,7 +2,6 @@ package de.dustplanet.immortallogin.listeners;
 
 import java.util.UUID;
 
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -53,11 +52,7 @@ public class ImmortalLoginListener implements Listener {
         }
         Player player = (Player) event.getEntity();
         if (plugin.getGods().contains(player.getUniqueId())) {
-            try {
-                player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-            } catch (NoClassDefFoundError e) {
-                player.setHealth(player.getMaxHealth());
-            }
+            utilities.setMaxHealth(player);
             player.setRemainingAir(player.getMaximumAir());
             player.setFireTicks(-1);
             event.setCancelled(true);
