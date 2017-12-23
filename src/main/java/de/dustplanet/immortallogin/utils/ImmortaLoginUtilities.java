@@ -32,10 +32,9 @@ public class ImmortaLoginUtilities {
                 if (result == UpdateResult.NO_UPDATE) {
                     instance.getLogger().info("You are running the latest version of ImmortalLogin!");
                 } else if (result == UpdateResult.UPDATE_AVAILABLE) {
-                    instance.getLogger()
-                            .info("There is an update available for ImmortalLogin. Go grab it from SpigotMC!");
-                    instance.getLogger().info("You are running " + instance.getPlugin().getDescription().getVersion()
-                            + ", latest is " + updater.getVersion());
+                    instance.getLogger().info("There is an update available for ImmortalLogin. Go grab it from SpigotMC!");
+                    instance.getLogger().info("You are running " + instance.getPlugin().getDescription().getVersion() + ", latest is "
+                            + updater.getVersion());
                 } else if (result == UpdateResult.SNAPSHOT_DISABLED) {
                     instance.getLogger().info("Update checking is disabled because you are running a dev build.");
                 } else {
@@ -61,7 +60,7 @@ public class ImmortaLoginUtilities {
         config.addDefault("confirmation.delay", 30);
         config.addDefault("nickColor", "DARK_PURPLE");
         config.addDefault("commandListEnabled", true);
-        config.addDefault("commandListBlacklist", true);
+        config.addDefault("commandListBlacklist", false);
         config.addDefault("commandList", Arrays.asList(commands));
         config.options().copyDefaults(true);
         plugin.saveConfig();
@@ -89,24 +88,19 @@ public class ImmortaLoginUtilities {
     }
 
     public void loadLocalization(FileConfiguration localization, File localizationFile) {
-        localization.addDefault("damage",
-                "&5[ImmortalLogin] &4You can not hit &e%player% &4in your first &e%time% minute(s)&4!");
-        localization.addDefault("hitsLeft",
-                "&5[ImmortalLogin] &4Only &e%hits% hits &4left until your god mode will be disabled!");
+        localization.addDefault("damage", "&5[ImmortalLogin] &4You can not hit &e%player% &4in your first &e%time% minute(s)&4!");
+        localization.addDefault("hitsLeft", "&5[ImmortalLogin] &4Only &e%hits% hits &4left until your god mode will be disabled!");
         localization.addDefault("god", "&5[ImmortalLogin] &2You are now &e%time% minutes(s) &2in god mode!");
         localization.addDefault("noConsole", "&4The console can not exit the god mode. Use /im list instead!");
         localization.addDefault("notInGodMode", "&5[ImmortalLogin] &4You are not in god mode anymore!");
         localization.addDefault("targetInGodMode",
                 "&5[ImmortalLogin] &4You can not hit &e%player% &4in his/her first &e%time% minute(s)&4!");
-        localization.addDefault("timeLeft",
-                "&5[ImmortalLogin] &2Note: Your god mode will expire in &e%time% minute(s)&2!");
+        localization.addDefault("timeLeft", "&5[ImmortalLogin] &2Note: Your god mode will expire in &e%time% minute(s)&2!");
         localization.addDefault("ungod", "&5[ImmortalLogin] &4You are no longer in god mode!");
         localization.addDefault("unknownCommand", "&5[ImmortalLogin] &4This command is unknown.");
-        localization.addDefault("noPermission",
-                "&5[ImmortalLogin] &4You do not have the permission to use this command!");
+        localization.addDefault("noPermission", "&5[ImmortalLogin] &4You do not have the permission to use this command!");
         localization.addDefault("noActiveGods", "&5[ImmortalLogin] &4There are no active players in god mode.");
-        localization.addDefault("activeGods",
-                "&5[ImmortalLogin] &2There are &e%players% &2active players in god mode:");
+        localization.addDefault("activeGods", "&5[ImmortalLogin] &2There are &e%players% &2active players in god mode:");
         localization.addDefault("commandNotAllowed", "&5[ImmortalLogin] &4This command is not allowed in god mode!");
         localization.addDefault("confirmationPending",
                 "&5[ImmortalLogin] &4Are you sure? &ePlease type /im again, to leave the god mode early.");
@@ -136,18 +130,18 @@ public class ImmortaLoginUtilities {
         localizedMessage = ChatColor.translateAlternateColorCodes('\u0026', localizedMessage);
         for (int index = 0; index < replacements.length; index++) {
             switch (index) {
-                case 0:
-                    localizedMessage = localizedMessage.replace("%player%", replacements[index]);
-                    localizedMessage = localizedMessage.replace("%players%", replacements[index]);
-                    break;
-                case 1:
-                    localizedMessage = localizedMessage.replace("%time%", replacements[index]);
-                    break;
-                case 2:
-                    localizedMessage = localizedMessage.replace("%hits%", replacements[index]);
-                    break;
-                default:
-                    break;
+            case 0:
+                localizedMessage = localizedMessage.replace("%player%", replacements[index]);
+                localizedMessage = localizedMessage.replace("%players%", replacements[index]);
+                break;
+            case 1:
+                localizedMessage = localizedMessage.replace("%time%", replacements[index]);
+                break;
+            case 2:
+                localizedMessage = localizedMessage.replace("%hits%", replacements[index]);
+                break;
+            default:
+                break;
             }
         }
         sender.sendMessage(localizedMessage);

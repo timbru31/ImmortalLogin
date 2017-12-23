@@ -7,7 +7,7 @@ confirmation:
   delay: 30
 nickColor: 'DARK_PURPLE'
 commandListEnabled: true
-commandListBlacklist: true
+commandListBlacklist: false
 commandList:
 - help
 - rules

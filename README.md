@@ -23,7 +23,7 @@ confirmation:
 nickColor: 'DARK_PURPLE'
 commandListEnabled: true
 # Toggle between a black and a whitelist (false means whitelist)
-commandListBlacklist: true
+commandListBlacklist: false
 commandList:
 - help
 - rules

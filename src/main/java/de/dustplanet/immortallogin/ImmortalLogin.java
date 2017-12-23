@@ -126,7 +126,11 @@ public class ImmortalLogin extends JavaPlugin {
     }
 
     public void setGod(final Player player) {
-        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        try {
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+        } catch (NoClassDefFoundError e) {
+            player.setHealth(player.getMaxHealth());
+        }
         getGods().add(player.getUniqueId());
         addTimer(player);
 
@@ -136,7 +140,7 @@ public class ImmortalLogin extends JavaPlugin {
             getNickManager().setSkin(player.getUniqueId(), player.getName());
         }
         final ImmortaLoginUtilities utilz = utilities;
-        final NickManager _nickManager = getNickManager();
+        final Object _nickManager = getNickManager();
         int ungodTaskID = getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
             if (getGods().contains(player.getUniqueId())) {
                 utilz.message(player, "ungod");
@@ -145,8 +149,8 @@ public class ImmortalLogin extends JavaPlugin {
                 getTimerTaskIDs().remove(player.getUniqueId());
                 getUngodTaskIDs().remove(player.getUniqueId());
                 if (_nickManager != null) {
-                    _nickManager.removeNick(player.getUniqueId());
-                    _nickManager.removeSkin(player.getUniqueId());
+                    ((NickManager) _nickManager).removeNick(player.getUniqueId());
+                    ((NickManager) _nickManager).removeSkin(player.getUniqueId());
                 }
             }
         }, getSeconds() * TICKS_PER_SECOND);

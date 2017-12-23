@@ -33,8 +33,7 @@ public class ImmortalLoginListener implements Listener {
             final ImmortaLoginUtilities utilz = utilities;
             final ImmortalLogin instance = plugin;
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
-                    () -> utilz.message(player, "god", "", Integer.toString(instance.getMinutes())),
-                    2 * ImmortalLogin.TICKS_PER_SECOND);
+                    () -> utilz.message(player, "god", "", Integer.toString(instance.getMinutes())), 2 * ImmortalLogin.TICKS_PER_SECOND);
         }
     }
 
@@ -54,7 +53,11 @@ public class ImmortalLoginListener implements Listener {
         }
         Player player = (Player) event.getEntity();
         if (plugin.getGods().contains(player.getUniqueId())) {
-            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+            try {
+                player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+            } catch (NoClassDefFoundError e) {
+                player.setHealth(player.getMaxHealth());
+            }
             player.setRemainingAir(player.getMaximumAir());
             player.setFireTicks(-1);
             event.setCancelled(true);
@@ -77,11 +80,9 @@ public class ImmortalLoginListener implements Listener {
                         if (hits >= plugin.getHits()) {
                             plugin.getGods().remove(damager.getUniqueId());
                             plugin.getAggros().remove(damager.getUniqueId());
-                            plugin.getServer().getScheduler()
-                                    .cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
+                            plugin.getServer().getScheduler().cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
                             plugin.getTimerTaskIDs().remove(damager.getUniqueId());
-                            plugin.getServer().getScheduler()
-                                    .cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
+                            plugin.getServer().getScheduler().cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
                             plugin.getUngodTaskIDs().remove(damager.getUniqueId());
                             utilities.message(damager, "ungod");
                             if (plugin.getNickManager() != null) {
@@ -99,8 +100,7 @@ public class ImmortalLoginListener implements Listener {
                     int rest = plugin.getHits() - 1;
                     utilities.message(damager, "hitsLeft", "", "", Integer.toString(rest));
                 } else if (plugin.getGods().contains(target.getUniqueId())) {
-                    utilities.message(damager, "targetInGodMode", target.getName(),
-                            Integer.toString(plugin.getMinutes()));
+                    utilities.message(damager, "targetInGodMode", target.getName(), Integer.toString(plugin.getMinutes()));
                     event.setCancelled(true);
                 }
             }
@@ -122,7 +122,6 @@ public class ImmortalLoginListener implements Listener {
                 utilities.message(player, "commandNotAllowed");
                 event.setCancelled(true);
             }
-
         }
     }
 }
