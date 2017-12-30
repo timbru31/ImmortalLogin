@@ -1,21 +1,22 @@
+_job_base: &_job_base
+  working_directory: ~/immortal-login
+  steps:
+    - checkout
+    - run: java -version
+    - run: maven -version
+    - restore_cache:
+        key: immortal-login-{{ checksum "pom.xml" }}
+    - run: mvn dependency:go-offline
+    - save_cache:
+        paths:
+          - ~/.m2
+        key: immortal-login-{{ checksum "pom.xml" }}
+    - run: mvn package
+
 version: 2
 jobs:
-  _base: &base
-    working_directory: ~/immortal-login
-    steps:
-      - checkout
-      - run: java -version
-      - run: maven -version
-      - restore_cache:
-          key: immortal-login-{{ checksum "pom.xml" }}
-      - run: mvn dependency:go-offline
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: immortal-login-{{ checksum "pom.xml" }}
-      - run: mvn package
   jdk8:
-    <<: *base
+    <<: *_job_base
     docker:
       - image: openjdk:8
   jdk9:
