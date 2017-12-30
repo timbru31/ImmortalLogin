@@ -3,7 +3,7 @@ _job_base: &job_base
   steps:
     - checkout
     - run: java -version
-    - run: maven -version
+    - run: mvn -version
     - restore_cache:
         key: immortal-login-{{ checksum "pom.xml" }}
     - run: mvn dependency:go-offline
