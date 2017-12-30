@@ -18,11 +18,11 @@ jobs:
   jdk8:
     <<: *job_base
     docker:
-      - image: openjdk:8
+      - image: maven:3-jdk-8-slim
   jdk9:
     <<: *job_base
     docker:
-      - image: openjdk:9
+      - image: maven:3-jdk-9-slim
 workflows:
   version: 2
   all_jdks:
