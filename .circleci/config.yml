@@ -11,7 +11,7 @@ _job_base: &job_base
         paths:
           - ~/.m2
         key: immortal-login-{{ checksum "pom.xml" }}
-    - run: mvn package
+    - run: mvn clean package -Pmetrics
 
 version: 2
 jobs:
