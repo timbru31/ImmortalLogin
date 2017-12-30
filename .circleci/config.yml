@@ -1,4 +1,4 @@
-_job_base: &_job_base
+_job_base: &job_base
   working_directory: ~/immortal-login
   steps:
     - checkout
@@ -16,11 +16,11 @@ _job_base: &_job_base
 version: 2
 jobs:
   jdk8:
-    <<: *_job_base
+    <<: *job_base
     docker:
       - image: openjdk:8
   jdk9:
-    <<: *base
+    <<: *job_base
     docker:
       - image: openjdk:9
 workflows:
