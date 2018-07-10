@@ -19,10 +19,6 @@ jobs:
     <<: *job_base
     docker:
       - image: maven:3-jdk-8-slim
-  jdk9:
-    <<: *job_base
-    docker:
-      - image: maven:3-jdk-9-slim
   jdk10:
     <<: *job_base
     docker:
@@ -32,5 +28,4 @@ workflows:
   all_jdks:
     jobs:
       - jdk8
-      - jdk9
       - jdk10
