@@ -116,7 +116,7 @@ public class ImmortalLogin extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("NickNamer") != null) {
             try {
                 setNickManager(NickNamerAPI.getNickManager());
-            } catch (Exception e) {
+            } catch (@SuppressWarnings("unused") Exception e) {
                 getLogger().severe("Unable to load NickNamer!");
             }
         }
