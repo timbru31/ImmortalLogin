@@ -48,6 +48,7 @@ public class ImmortaLoginUtilities {
         }
     }
 
+    @SuppressWarnings("unused")
     public void trackMetrics() {
         new Metrics(plugin);
     }
@@ -132,18 +133,18 @@ public class ImmortaLoginUtilities {
         localizedMessage = ChatColor.translateAlternateColorCodes('\u0026', localizedMessage);
         for (int index = 0; index < replacements.length; index++) {
             switch (index) {
-            case 0:
-                localizedMessage = localizedMessage.replace("%player%", replacements[index]);
-                localizedMessage = localizedMessage.replace("%players%", replacements[index]);
-                break;
-            case 1:
-                localizedMessage = localizedMessage.replace("%time%", replacements[index]);
-                break;
-            case 2:
-                localizedMessage = localizedMessage.replace("%hits%", replacements[index]);
-                break;
-            default:
-                break;
+                case 0:
+                    localizedMessage = localizedMessage.replace("%player%", replacements[index]);
+                    localizedMessage = localizedMessage.replace("%players%", replacements[index]);
+                    break;
+                case 1:
+                    localizedMessage = localizedMessage.replace("%time%", replacements[index]);
+                    break;
+                case 2:
+                    localizedMessage = localizedMessage.replace("%hits%", replacements[index]);
+                    break;
+                default:
+                    break;
             }
         }
         sender.sendMessage(localizedMessage);
