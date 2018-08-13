@@ -19,7 +19,6 @@
     <plugin.name>ImmortalLogin</plugin.name>
     <plugin.main>de.dustplanet.immortallogin.ImmortalLogin</plugin.main>
     <plugin.package>de.dustplanet.immortallogin</plugin.package>
-    <jdk.version>1.8</jdk.version>
   </properties>
 
   <!-- Repositories -->
@@ -39,35 +38,11 @@
     <dependency>
       <groupId>org.inventivetalent.nicknamer</groupId>
       <artifactId>api</artifactId>
-      <version>3.14.1-SNAPSHOT</version>
+      <version>3.15.0-SNAPSHOT</version>
       <exclusions>
         <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>bukkit</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>craftbukkit</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.mcstats.bukkit</groupId>
-          <artifactId>metrics</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.inventivetalent</groupId>
-          <artifactId>reflectionhelper</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.inventivetalent</groupId>
-          <artifactId>mc-wrappers</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.inventivetalent</groupId>
-          <artifactId>packetlistenerapi</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.spigotmc</groupId>
-          <artifactId>spigot</artifactId>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

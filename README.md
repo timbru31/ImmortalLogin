@@ -32,9 +32,12 @@ commandListEnabled: true
 # Toggle between a black and a whitelist (false means whitelist)
 commandListBlacklist: false
 commandList:
-- help
-- rules
-- motd
+  - immortallogin
+  - immortal
+  - im
+  - help
+  - rules
+  - motd
 ```
 
 ## Permissions

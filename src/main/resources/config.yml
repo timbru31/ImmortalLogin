@@ -9,6 +9,9 @@ nickColor: 'DARK_PURPLE'
 commandListEnabled: true
 commandListBlacklist: false
 commandList:
-- help
-- rules
-- motd
+  - immortallogin
+  - immortal
+  - im
+  - help
+  - rules
+  - motd

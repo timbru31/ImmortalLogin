@@ -54,7 +54,7 @@ public class ImmortaLoginUtilities {
     }
 
     public void loadConfig() {
-        String[] commands = { "help", "rules", "motd" };
+        String[] commands = { "immortallogin", "immortal", "im", "help", "rules", "motd" };
         FileConfiguration config = plugin.getConfig();
         config.addDefault("disableUpdater", false);
         config.addDefault("first-login.hits", 20);
@@ -154,7 +154,7 @@ public class ImmortaLoginUtilities {
     public void setMaxHealth(final Player player) {
         try {
             player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-        } catch (NoClassDefFoundError e) {
+        } catch (@SuppressWarnings("unused") NoClassDefFoundError e) {
             player.setHealth(player.getMaxHealth());
         }
     }
