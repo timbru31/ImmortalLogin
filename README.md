@@ -5,7 +5,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/fs3qol02k6d8asdt?svg=true)](https://ci.appveyor.com/project/timbru31/immortallogin)
 [![Known Vulnerabilities](https://snyk.io/test/github/timbru31/immortallogin/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/timbru31/immortallogin?targetFile=pom.xml)
 
-[![SpigotMC](https://img.shields.io/badge/SpigotMC-v1.4.2-orange.svg)](https://www.spigotmc.org/resources/25481/)
+[![SpigotMC](https://img.shields.io/badge/SpigotMC-v2.0.0-orange.svg)](https://www.spigotmc.org/resources/25481/)
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
