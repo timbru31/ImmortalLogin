@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 
 import de.dustplanet.immortallogin.ImmortalLogin;
 import de.dustplanet.immortallogin.utils.Updater.UpdateResult;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class ImmortaLoginUtilities {
     private ImmortalLogin plugin;
@@ -113,6 +114,9 @@ public class ImmortaLoginUtilities {
 
     public void copy(String yml, File file) {
         try (OutputStream out = new FileOutputStream(file); InputStream in = plugin.getResource(yml)) {
+            if (in == null) {
+                return;
+            }
             byte[] buf = new byte[1024];
             int len;
             while ((len = in.read(buf)) > 0) {
@@ -150,8 +154,12 @@ public class ImmortaLoginUtilities {
         sender.sendMessage(localizedMessage);
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({ "deprecation", "static-method" })
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void setMaxHealth(final Player player) {
+        if (player == null) {
+            return;
+        }
         try {
             player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
         } catch (@SuppressWarnings("unused") NoClassDefFoundError e) {

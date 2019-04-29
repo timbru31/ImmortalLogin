@@ -9,12 +9,10 @@ import java.net.URL;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- *
  * Based on the Updater of PatoTheBest. Thanks for sharing this class.
  *
  * @author PatoTheBest
  * @author xGhOsTkiLLeRx
- *
  */
 
 public class Updater {
@@ -107,6 +105,7 @@ public class Updater {
         result = shouldUpdate(oldVersion, version) ? UpdateResult.UPDATE_AVAILABLE : UpdateResult.NO_UPDATE;
     }
 
+    @SuppressWarnings("static-method")
     public boolean shouldUpdate(String localVersion, String remoteVersion) {
         return !localVersion.equalsIgnoreCase(remoteVersion);
     }

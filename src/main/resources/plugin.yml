@@ -4,7 +4,7 @@ description: Temporary god mode for new players
 main: de.dustplanet.immortallogin.ImmortalLogin
 version: ${project.version}${build.number}
 website: https://www.spigotmc.org/resources/25481
-api-version: 1.13
+api-version: 1.14
 commands:
   immortallogin:
     description: Removes GodMode

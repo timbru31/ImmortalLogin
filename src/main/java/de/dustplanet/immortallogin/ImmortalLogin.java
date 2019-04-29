@@ -20,6 +20,7 @@ import de.dustplanet.immortallogin.commands.ImmortalLoginCommands;
 import de.dustplanet.immortallogin.listeners.ImmortalLoginListener;
 import de.dustplanet.immortallogin.utils.ImmortaLoginUtilities;
 import de.dustplanet.immortallogin.utils.ScalarYamlConfiguration;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -81,6 +82,7 @@ public class ImmortalLogin extends JavaPlugin {
     }
 
     @Override
+    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void onEnable() {
         configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {

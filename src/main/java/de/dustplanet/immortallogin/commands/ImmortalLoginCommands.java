@@ -41,11 +41,9 @@ public class ImmortalLoginCommands implements CommandExecutor {
                         }
                         utilities.message(sender, "ungod");
                         gods.remove(player.getUniqueId());
-                        plugin.getServer().getScheduler()
-                                .cancelTask(plugin.getTimerTaskIDs().get(player.getUniqueId()));
+                        plugin.getServer().getScheduler().cancelTask(plugin.getTimerTaskIDs().get(player.getUniqueId()));
                         plugin.getTimerTaskIDs().remove(player.getUniqueId());
-                        plugin.getServer().getScheduler()
-                                .cancelTask(plugin.getUngodTaskIDs().get(player.getUniqueId()));
+                        plugin.getServer().getScheduler().cancelTask(plugin.getUngodTaskIDs().get(player.getUniqueId()));
                         plugin.getUngodTaskIDs().remove(player.getUniqueId());
                     } else {
                         utilities.message(sender, "notInGodMode");
@@ -60,11 +58,10 @@ public class ImmortalLoginCommands implements CommandExecutor {
                         if (gods.isEmpty()) {
                             utilities.message(sender, "noActiveGods");
                         } else {
-                            String activeGods = gods.stream()
-                                    .map(e -> ChatColor.YELLOW + plugin.getServer().getPlayer(e).getName())
-                                    .collect(Collectors.joining(", "));
+                            String activeGods = gods.stream().map(e -> plugin.getServer().getPlayer(e)).filter(player -> player != null)
+                                    .map(Player::getName).collect(Collectors.joining(", "));
                             utilities.message(sender, "activeGods", Integer.toString(gods.size()));
-                            sender.sendMessage(activeGods);
+                            sender.sendMessage(ChatColor.YELLOW + activeGods);
                         }
                     } else {
                         utilities.message(sender, "noPermission");
