@@ -19,8 +19,7 @@ import de.dustplanet.immortallogin.utils.Updater.UpdateResult;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 public class ImmortaLoginUtilities {
-    private static final BSTATS_PLUGIN_ID = 683;
-    
+    private static final int BSTATS_PLUGIN_ID = 683;
     private ImmortalLogin plugin;
 
     public ImmortaLoginUtilities(ImmortalLogin instance) {
