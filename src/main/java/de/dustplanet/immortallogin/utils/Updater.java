@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,12 +17,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 
 public class Updater {
-    private JavaPlugin plugin;
     private static final String API_KEY = "98BE0FE67F88AB82B4C197FAF1DC3B69206EFDCC4D3B80FC83A00037510B99B4";
     private static final String REQUEST_METHOD = "POST";
-    private final String resourceID;
     private static final String HOST = "https://www.spigotmc.org";
     private static final String QUERY = "/api/general.php";
+    private JavaPlugin plugin;
+    private final String resourceID;
     private String writeString;
 
     private String version;
@@ -67,14 +68,14 @@ public class Updater {
         connection.setDoOutput(true);
         try {
             connection.setRequestMethod(REQUEST_METHOD);
-            connection.getOutputStream().write(writeString.getBytes("UTF-8"));
+            connection.getOutputStream().write(writeString.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             plugin.getLogger().severe("Failed to open the connection to SpigotMC.");
             e.printStackTrace();
             result = UpdateResult.FAIL_SPIGOT;
         }
         String newVersion;
-        try (InputStreamReader isr = new InputStreamReader(connection.getInputStream(), "UTF-8");
+        try (InputStreamReader isr = new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8);
                 BufferedReader br = new BufferedReader(isr)) {
             newVersion = br.readLine();
         } catch (IOException e) {
@@ -89,10 +90,10 @@ public class Updater {
             return;
         }
         // Check for "magic string"
-        if (newVersion.equalsIgnoreCase("Invalid resource")) {
+        if ("Invalid resource".equalsIgnoreCase(newVersion)) {
             result = UpdateResult.BAD_RESOURCEID;
             return;
-        } else if (newVersion.equalsIgnoreCase("Invalid access key")) {
+        } else if ("Invalid access key".equalsIgnoreCase(newVersion)) {
             result = UpdateResult.BAD_API_KEY;
             return;
         }

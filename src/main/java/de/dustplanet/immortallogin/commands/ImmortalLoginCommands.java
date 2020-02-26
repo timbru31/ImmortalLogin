@@ -53,7 +53,7 @@ public class ImmortalLoginCommands implements CommandExecutor {
                 }
                 break;
             case 1:
-                if (args[0].equalsIgnoreCase("list")) {
+                if ("list".equalsIgnoreCase(args[0])) {
                     if (sender.hasPermission("immortallogin.list.gods")) {
                         if (gods.isEmpty()) {
                             utilities.message(sender, "noActiveGods");
