@@ -107,7 +107,7 @@ public class Updater {
     }
 
     @SuppressWarnings("static-method")
-    public boolean shouldUpdate(String localVersion, String remoteVersion) {
+    private boolean shouldUpdate(String localVersion, String remoteVersion) {
         return !localVersion.equalsIgnoreCase(remoteVersion);
     }
 

@@ -58,14 +58,14 @@ public class ImmortaLoginUtilities {
     public void loadConfig() {
         String[] commands = { "immortallogin", "immortal", "im", "help", "rules", "motd" };
         FileConfiguration config = plugin.getConfig();
-        config.addDefault("disableUpdater", false);
+        config.addDefault("disableUpdater", Boolean.FALSE);
         config.addDefault("first-login.hits", 20);
         config.addDefault("first-login.seconds", 1200);
-        config.addDefault("confirmation.enabled", false);
+        config.addDefault("confirmation.enabled", Boolean.FALSE);
         config.addDefault("confirmation.delay", 30);
         config.addDefault("nickColor", "DARK_PURPLE");
-        config.addDefault("commandListEnabled", true);
-        config.addDefault("commandListBlacklist", false);
+        config.addDefault("commandListEnabled", Boolean.TRUE);
+        config.addDefault("commandListBlacklist", Boolean.FALSE);
         config.addDefault("commandList", Arrays.asList(commands));
         config.options().copyDefaults(true);
         plugin.saveConfig();
