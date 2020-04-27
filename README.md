@@ -1,10 +1,10 @@
 # ImmortalLogin
 [![Build Status](https://ci.dustplanet.de/buildStatus/icon?job=ImmortalLogin)](https://ci.dustplanet.de/job/ImmortalLogin/)
 [![Build Status](https://travis-ci.org/timbru31/ImmortalLogin.svg?branch=master)](https://travis-ci.org/timbru31/ImmortalLogin)
-[![Build status](https://ci.appveyor.com/api/projects/status/fs3qol02k6d8asdt?svg=true)](https://ci.appveyor.com/project/timbru31/immortallogin)
+![Build the plugin](https://github.com/timbru31/ImmortalLogin/workflows/Build%20the%20plugin/badge.svg)
 [![Known Vulnerabilities](https://snyk.io/test/github/timbru31/immortallogin/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/timbru31/immortallogin?targetFile=pom.xml)
 
-[![SpigotMC](https://img.shields.io/badge/SpigotMC-v3.0.2-orange.svg)](https://www.spigotmc.org/resources/25481/)
+[![SpigotMC](https://img.shields.io/badge/SpigotMC-v3.0.3-orange.svg)](https://www.spigotmc.org/resources/25481/)
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
