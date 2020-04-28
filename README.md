@@ -56,7 +56,7 @@ For support visit the SpigotMC page: https://www.spigotmc.org/resources/25481/
 
 ## Usage statistics
 
-_stats images are returning soon!_
+[![Usage statistics](https://bstats.org/signatures/bukkit/ImmortalLogin.svg)](https://bstats.org/plugin/bukkit/ImmortalLogin/683)
 
 ## Data usage collection of bStats
 
