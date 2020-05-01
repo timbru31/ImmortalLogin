@@ -4,7 +4,7 @@
 [![Build the plugin](https://github.com/timbru31/ImmortalLogin/workflows/Build%20the%20plugin/badge.svg)](https://github.com/timbru31/ImmortalLogin/actions?query=workflow%3A%22Build+the+plugin%22)
 [![Known Vulnerabilities](https://snyk.io/test/github/timbru31/immortallogin/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/timbru31/immortallogin?targetFile=pom.xml)
 
-[![SpigotMC](https://img.shields.io/badge/SpigotMC-v3.0.3-orange.svg)](https://www.spigotmc.org/resources/25481/)
+[![SpigotMC](https://img.shields.io/badge/SpigotMC-v3.0.4-orange.svg)](https://www.spigotmc.org/resources/25481/)
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
