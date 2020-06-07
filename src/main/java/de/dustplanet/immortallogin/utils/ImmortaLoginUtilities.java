@@ -106,13 +106,7 @@ public class ImmortaLoginUtilities {
         plugin.setConfirmation(config.getBoolean("confirmation.enabled"));
     }
 
-    /**
-     * Saves the localization YML to a file.
-     *
-     * @param localization the YML localization object
-     * @param localizationFile the file to save to
-     */
-    public void saveLocalization(final FileConfiguration localization, final File localizationFile) {
+    private void saveLocalization(final FileConfiguration localization, final File localizationFile) {
         try {
             localization.save(localizationFile);
         } catch (final IOException e) {
