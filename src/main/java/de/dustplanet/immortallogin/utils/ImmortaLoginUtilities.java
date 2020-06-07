@@ -1,11 +1,12 @@
 package de.dustplanet.immortallogin.utils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
@@ -18,46 +19,68 @@ import de.dustplanet.immortallogin.ImmortalLogin;
 import de.dustplanet.immortallogin.utils.Updater.UpdateResult;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+/**
+ * Utility and helper methods for ImmortalLogin.
+ *
+ * @author timbru31
+ */
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ImmortaLoginUtilities {
+    private static final int BUFFER_SIZE = 1024;
     private static final int BSTATS_PLUGIN_ID = 683;
-    private ImmortalLogin plugin;
+    private final ImmortalLogin plugin;
 
-    public ImmortaLoginUtilities(ImmortalLogin instance) {
+    @SuppressFBWarnings("IMC_IMMATURE_CLASS_NO_TOSTRING")
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public ImmortaLoginUtilities(final ImmortalLogin instance) {
         plugin = instance;
     }
 
+    /**
+     * Checks for an update of ImmortalLogin.
+     *
+     * @param resourceID the resourceID of ImmortalLogin assigned by Spigot
+     */
+    @SuppressWarnings("checkstyle:SeparatorWrap")
     public void checkForUpdate(final int resourceID) {
-        boolean updaterDisabled = plugin.getConfig().getBoolean("disableUpdater", false);
-        if (!updaterDisabled) {
+        final boolean updaterDisabled = plugin.getConfig().getBoolean("disableUpdater", false);
+        if (updaterDisabled) {
+            plugin.getLogger().info("Updater is disabled");
+        } else {
             final ImmortalLogin instance = plugin;
             plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, () -> {
-                Updater updater = new Updater(instance, resourceID, false);
-                UpdateResult result = updater.getResult();
+                final Updater updater = new Updater(instance, resourceID, false);
+                final UpdateResult result = updater.getResult();
                 if (result == UpdateResult.NO_UPDATE) {
                     instance.getLogger().info("You are running the latest version of ImmortalLogin!");
                 } else if (result == UpdateResult.UPDATE_AVAILABLE) {
                     instance.getLogger().info("There is an update available for ImmortalLogin. Go grab it from SpigotMC!");
-                    instance.getLogger().info("You are running " + instance.getPlugin().getDescription().getVersion() + ", latest is "
-                            + updater.getVersion());
+                    instance.getLogger()
+                            .info("You are running " + instance.getPlugin().getDescription().getVersion().replaceAll("[\r\n]", "")
+                                    + ", latest is " + updater.getVersion().replaceAll("[\r\n]", ""));
                 } else if (result == UpdateResult.SNAPSHOT_DISABLED) {
                     instance.getLogger().info("Update checking is disabled because you are running a dev build.");
                 } else {
                     instance.getLogger().warning("The Updater returned the following value: " + result.name());
                 }
             }, 2 * ImmortalLogin.TICKS_PER_SECOND);
-        } else {
-            plugin.getLogger().info("Updater is disabled");
         }
     }
 
-    @SuppressWarnings("unused")
+    @SuppressWarnings({ "unused", "checkstyle:MissingJavadocMethod" })
+    @SuppressFBWarnings("SEC_SIDE_EFFECT_CONSTRUCTOR")
     public void trackMetrics() {
         new Metrics(plugin, BSTATS_PLUGIN_ID);
     }
 
+    /**
+     * Config loading.
+     */
+    @SuppressFBWarnings(value = "SACM_STATIC_ARRAY_CREATED_IN_METHOD", justification = "Only called once")
+    @SuppressWarnings("checkstyle:MagicNumber")
     public void loadConfig() {
-        String[] commands = { "immortallogin", "immortal", "im", "help", "rules", "motd" };
-        FileConfiguration config = plugin.getConfig();
+        final String[] commands = { "immortallogin", "immortal", "im", "help", "rules", "motd" };
+        final FileConfiguration config = plugin.getConfig();
         config.addDefault("disableUpdater", Boolean.FALSE);
         config.addDefault("first-login.hits", 20);
         config.addDefault("first-login.seconds", 1200);
@@ -70,12 +93,12 @@ public class ImmortaLoginUtilities {
         config.options().copyDefaults(true);
         plugin.saveConfig();
 
-        int seconds = config.getInt("first-login.seconds", 1200);
-        float minutes = seconds / (float) 60;
-        int hits = config.getInt("first-login.hits", 20);
+        final int seconds = config.getInt("first-login.seconds", 1200);
+        final double minutes = seconds / (double) 60;
+        final int hits = config.getInt("first-login.hits", 20);
         plugin.setSeconds(seconds);
         plugin.setHits(hits);
-        plugin.setMinutes(Math.round(minutes));
+        plugin.setMinutes((int) Math.round(minutes));
 
         plugin.setCommandBlackList(config.getBoolean("commandListBlacklist", true));
         plugin.setCommandListEnabled(config.getBoolean("commandListEnabled", true));
@@ -83,16 +106,27 @@ public class ImmortaLoginUtilities {
         plugin.setConfirmation(config.getBoolean("confirmation.enabled"));
     }
 
-    public void saveLocalization(FileConfiguration localization, File localizationFile) {
+    /**
+     * Saves the localization YML to a file.
+     *
+     * @param localization the YML localization object
+     * @param localizationFile the file to save to
+     */
+    public void saveLocalization(final FileConfiguration localization, final File localizationFile) {
         try {
             localization.save(localizationFile);
-        } catch (IOException e) {
-            plugin.getLogger().warning("Failed to save the localization! Please report this! (I/O)");
-            e.printStackTrace();
+        } catch (final IOException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to save the localization! Please report this! (I/O)", e);
         }
     }
 
-    public void loadLocalization(FileConfiguration localization, File localizationFile) {
+    /**
+     * Loads the localization YML and writes the default to a file.
+     *
+     * @param localization the YML localization object
+     * @param localizationFile the file to save the defaults to
+     */
+    public void loadLocalization(final FileConfiguration localization, final File localizationFile) {
         localization.addDefault("damage", "&5[ImmortalLogin] &4You can not hit &e%player% &4in your first &e%time% minute(s)&4!");
         localization.addDefault("hitsLeft", "&5[ImmortalLogin] &4Only &e%hits% hits &4left until your god mode will be disabled!");
         localization.addDefault("god", "&5[ImmortalLogin] &2You are now &e%time% minutes(s) &2in god mode!");
@@ -113,29 +147,44 @@ public class ImmortaLoginUtilities {
         saveLocalization(localization, localizationFile);
     }
 
-    public void copy(String yml, File file) {
-        try (OutputStream out = new FileOutputStream(file); InputStream in = plugin.getResource(yml)) {
-            if (in == null) {
+    /**
+     * Helper method to copy a YML string to a file.
+     *
+     * @param yml the YML string
+     * @param file the file to save to
+     */
+    @SuppressWarnings({ "PMD.AssignmentInOperand", "PMD.DataflowAnomalyAnalysis" })
+    @SuppressFBWarnings({ "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE", "RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE",
+            "NP_LOAD_OF_KNOWN_NULL_VALUE" })
+    public void copy(final String yml, final File file) {
+        try (OutputStream out = Files.newOutputStream(file.toPath()); InputStream inputStream = plugin.getResource(yml)) {
+            if (inputStream == null) {
                 return;
             }
-            byte[] buf = new byte[1024];
+            final byte[] buf = new byte[BUFFER_SIZE];
             int len;
-            while ((len = in.read(buf)) > 0) {
+            while ((len = inputStream.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
-        } catch (IOException e) {
-            plugin.getLogger().warning("Failed to copy the default config! (I/O)");
-            e.printStackTrace();
+        } catch (final IOException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to copy the default config! (I/O)", e);
         }
     }
 
-    public void message(CommandSender sender, String message, String... replacements) {
+    /**
+     * Sends a message to a command sender with replacements.
+     *
+     * @param sender the command sender - console or place
+     * @param message the message to load from the YML file
+     * @param replacements the replacements that should be performed
+     */
+    public void message(final CommandSender sender, final String message, final String... replacements) {
         String localizedMessage = plugin.getLocalization().getString(message);
         if (localizedMessage == null || localizedMessage.isEmpty()) {
-            plugin.getLogger().severe("Missing i18n translation: " + message);
+            plugin.getLogger().severe("Missing i18n translation: " + message.replaceAll("[\r\n]", ""));
             return;
         }
-        localizedMessage = ChatColor.translateAlternateColorCodes('\u0026', localizedMessage);
+        localizedMessage = ChatColor.translateAlternateColorCodes('&', localizedMessage);
         for (int index = 0; index < replacements.length; index++) {
             switch (index) {
                 case 0:
@@ -155,7 +204,12 @@ public class ImmortaLoginUtilities {
         sender.sendMessage(localizedMessage);
     }
 
-    @SuppressWarnings({ "deprecation", "static-method" })
+    /**
+     * A multi version compatible method to set the max health of a player.
+     *
+     * @param player the player
+     */
+    @SuppressWarnings({ "deprecation", "static-method", "PMD.UnnecessaryAnnotationValueElement" })
     @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     public void setMaxHealth(final Player player) {
         if (player == null) {
@@ -163,7 +217,7 @@ public class ImmortaLoginUtilities {
         }
         try {
             player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-        } catch (@SuppressWarnings("unused") NoClassDefFoundError e) {
+        } catch (@SuppressWarnings("unused") final NoClassDefFoundError e) {
             player.setHealth(player.getMaxHealth());
         }
     }

@@ -5,3 +5,5 @@
 target/
 bin/
 dependency-reduced-pom.xml
+.eclipse-pmd
+.checkstyle

@@ -14,18 +14,28 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import de.dustplanet.immortallogin.ImmortalLogin;
 import de.dustplanet.immortallogin.utils.ImmortaLoginUtilities;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+/**
+ * The event listener to cancel various damages events while in god mode.
+ *
+ * @author timbru31
+ */
+@SuppressWarnings({ "PMD.DataflowAnomalyAnalysis", "checkstyle:MultipleStringLiterals" })
 public class ImmortalLoginListener implements Listener {
-    private ImmortalLogin plugin;
-    private ImmortaLoginUtilities utilities;
+    private final ImmortalLogin plugin;
+    private final ImmortaLoginUtilities utilities;
 
-    public ImmortalLoginListener(ImmortalLogin instance, ImmortaLoginUtilities utilities) {
+    @SuppressFBWarnings("IMC_IMMATURE_CLASS_NO_TOSTRING")
+    @SuppressWarnings({ "checkstyle:MissingJavadocMethod", "PMD.AvoidDuplicateLiterals" })
+    public ImmortalLoginListener(final ImmortalLogin instance, final ImmortaLoginUtilities utilities) {
         plugin = instance;
         this.utilities = utilities;
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    @SuppressWarnings({ "checkstyle:MissingJavadocMethod", "checkstyle:Indentation" })
+    public void onPlayerJoin(final PlayerJoinEvent event) {
         final Player player = event.getPlayer();
         if (!player.hasPlayedBefore()) {
             plugin.setGod(player);
@@ -37,8 +47,9 @@ public class ImmortalLoginListener implements Listener {
     }
 
     @EventHandler
-    public void onFoodLevelChanged(FoodLevelChangeEvent event) {
-        Player player = (Player) event.getEntity();
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public void onFoodLevelChanged(final FoodLevelChangeEvent event) {
+        final Player player = (Player) event.getEntity();
         if (plugin.getGods().contains(player.getUniqueId())) {
             player.setFoodLevel(player.getFoodLevel());
             event.setCancelled(true);
@@ -46,11 +57,12 @@ public class ImmortalLoginListener implements Listener {
     }
 
     @EventHandler
-    public void onEntityDamage(EntityDamageEvent event) {
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public void onEntityDamage(final EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
-        Player player = (Player) event.getEntity();
+        final Player player = (Player) event.getEntity();
         if (plugin.getGods().contains(player.getUniqueId())) {
             utilities.setMaxHealth(player);
             player.setRemainingAir(player.getMaximumAir());
@@ -60,54 +72,58 @@ public class ImmortalLoginListener implements Listener {
     }
 
     @EventHandler
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player target = (Player) event.getEntity();
-            if (event.getDamager() instanceof Player) {
-                Player damager = (Player) event.getDamager();
-                if (plugin.getGods().contains(damager.getUniqueId())) {
-                    event.setCancelled(true);
-                    if (!plugin.getAggros().containsKey(damager.getUniqueId())) {
-                        utilities.message(damager, "damage", target.getName(), Integer.toString(plugin.getMinutes()));
-                    }
-                    if (plugin.getAggros().containsKey(damager.getUniqueId())) {
-                        int hits = plugin.getAggros().get(damager.getUniqueId()) + 1;
-                        if (hits >= plugin.getHits()) {
-                            plugin.getGods().remove(damager.getUniqueId());
-                            plugin.getAggros().remove(damager.getUniqueId());
-                            plugin.getServer().getScheduler().cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
-                            plugin.getTimerTaskIDs().remove(damager.getUniqueId());
-                            plugin.getServer().getScheduler().cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
-                            plugin.getUngodTaskIDs().remove(damager.getUniqueId());
-                            utilities.message(damager, "ungod");
-                            if (plugin.getNickManager() != null) {
-                                plugin.getNickManager().removeNick(damager.getUniqueId());
-                                plugin.getNickManager().removeSkin(damager.getUniqueId());
-                            }
-                            return;
-                        }
-                        int hitsLeft = plugin.getHits() - hits;
-                        plugin.getAggros().put(damager.getUniqueId(), hits);
-                        utilities.message(damager, "hitsLeft", "", "", Integer.toString(hitsLeft));
-                        return;
-                    }
-                    plugin.getAggros().put(damager.getUniqueId(), 1);
-                    int rest = plugin.getHits() - 1;
-                    utilities.message(damager, "hitsLeft", "", "", Integer.toString(rest));
-                } else if (plugin.getGods().contains(target.getUniqueId())) {
-                    utilities.message(damager, "targetInGodMode", target.getName(), Integer.toString(plugin.getMinutes()));
-                    event.setCancelled(true);
+    @SuppressWarnings({ "checkstyle:MissingJavadocMethod", "checkstyle:ReturnCount", "checkstyle:NestedIfDepth" })
+    public void onEntityDamageByEntity(final EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player) && !(event.getDamager() instanceof Player)) {
+            return;
+        }
+
+        final Player target = (Player) event.getEntity();
+        final Player damager = (Player) event.getDamager();
+        if (plugin.getGods().contains(damager.getUniqueId())) {
+            event.setCancelled(true);
+            if (plugin.getAggros().containsKey(damager.getUniqueId())) {
+                final int hits = plugin.getAggros().get(damager.getUniqueId()) + 1;
+                if (hits >= plugin.getHits()) {
+                    plugin.getGods().remove(damager.getUniqueId());
+                    plugin.getAggros().remove(damager.getUniqueId());
+                    plugin.getServer().getScheduler().cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
+                    plugin.getTimerTaskIDs().remove(damager.getUniqueId());
+                    plugin.getServer().getScheduler().cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
+                    plugin.getUngodTaskIDs().remove(damager.getUniqueId());
+                    utilities.message(damager, "ungod");
+                    removeNick(damager);
+                    return;
                 }
+                final int hitsLeft = plugin.getHits() - hits;
+                plugin.getAggros().put(damager.getUniqueId(), hits);
+                utilities.message(damager, "hitsLeft", "", "", Integer.toString(hitsLeft));
+                return;
             }
+            utilities.message(damager, "damage", target.getName(), Integer.toString(plugin.getMinutes()));
+            plugin.getAggros().put(damager.getUniqueId(), 1);
+            final int rest = plugin.getHits() - 1;
+            utilities.message(damager, "hitsLeft", "", "", Integer.toString(rest));
+        } else if (plugin.getGods().contains(target.getUniqueId())) {
+            utilities.message(damager, "targetInGodMode", target.getName(), Integer.toString(plugin.getMinutes()));
+            event.setCancelled(true);
+        }
+    }
+
+    private void removeNick(final Player damager) {
+        if (plugin.getNickManager() != null) {
+            plugin.getNickManager().removeNick(damager.getUniqueId());
+            plugin.getNickManager().removeSkin(damager.getUniqueId());
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        Player player = event.getPlayer();
-        UUID playerUUID = event.getPlayer().getUniqueId();
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public void onPlayerCommandPreprocess(final PlayerCommandPreprocessEvent event) {
+        final Player player = event.getPlayer();
+        final UUID playerUUID = event.getPlayer().getUniqueId();
         if (plugin.isCommandListEnabled() && plugin.getGods().contains(playerUUID)) {
-            String message = event.getMessage();
+            final String message = event.getMessage();
             String command = message.replaceFirst("/", "");
             if (command.contains(" ")) {
                 command = command.substring(0, command.indexOf(' '));

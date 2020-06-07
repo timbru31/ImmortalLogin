@@ -2,10 +2,10 @@ package de.dustplanet.immortallogin;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -24,25 +24,37 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The main class of the ImmortalLogin.
+ *
+ * @author timbru31
+ */
+@SuppressWarnings({ "PMD.AtLeastOneConstructor", "PMD.TooManyFields", "checkstyle:MultipleStringLiterals", "checkstyle:MissingCtor" })
+@SuppressFBWarnings({ "FCCD_FIND_CLASS_CIRCULAR_DEPENDENCY", "CD_CIRCULAR_DEPENDENCY" })
 public class ImmortalLogin extends JavaPlugin {
-    private static final int RESOURCE_ID = 25481;
     public static final long TICKS_PER_SECOND = 20L;
+    private static final int RESOURCE_ID = 25_481;
     @Getter
-    private List<UUID> gods = new ArrayList<>();
+    private final List<UUID> gods = new ArrayList<>();
     @Getter
-    private Map<UUID, Integer> aggros = new HashMap<>();
+    private final Map<UUID, Integer> aggros = new ConcurrentHashMap<>();
     @Getter
-    private Map<UUID, Integer> timerTaskIDs = new HashMap<>();
+    private final Map<UUID, Integer> timerTaskIDs = new ConcurrentHashMap<>();
     @Getter
-    private Map<UUID, Integer> ungodTaskIDs = new HashMap<>();
+    private final Map<UUID, Integer> ungodTaskIDs = new ConcurrentHashMap<>();
     @Getter
     @Setter
-    private int seconds, minutes, hits;
+    private int seconds;
+    @Getter
+    @Setter
+    private int minutes;
+    @Getter
+    @Setter
+    private int hits;
     @Getter
     @Setter
     private FileConfiguration localization;
-    private File configFile, localizationFile;
-    private ImmortaLoginUtilities utilities = new ImmortaLoginUtilities(this);
+    private final ImmortaLoginUtilities utilities = new ImmortaLoginUtilities(this);
     @Getter
     @Setter
     private NickManager nickManager;
@@ -56,7 +68,7 @@ public class ImmortalLogin extends JavaPlugin {
     @Setter
     private boolean commandListEnabled = true;
     @Getter
-    private List<UUID> pendingConfirmationList = new ArrayList<>();
+    private final List<UUID> pendingConfirmationList = new ArrayList<>();
     @Getter
     @Setter
     private boolean confirmation;
@@ -70,11 +82,11 @@ public class ImmortalLogin extends JavaPlugin {
         if (confirmationCleanupTask != null) {
             confirmationCleanupTask.cancel();
         }
-        for (int taskID : getTimerTaskIDs().values()) {
+        for (final int taskID : getTimerTaskIDs().values()) {
             getServer().getScheduler().cancelTask(taskID);
         }
         getTimerTaskIDs().clear();
-        for (int taskID : getUngodTaskIDs().values()) {
+        for (final int taskID : getUngodTaskIDs().values()) {
             getServer().getScheduler().cancelTask(taskID);
         }
         getUngodTaskIDs().clear();
@@ -83,8 +95,9 @@ public class ImmortalLogin extends JavaPlugin {
 
     @Override
     @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    @SuppressWarnings({ "PMD.UnnecessaryAnnotationValueElement", "PMD.AvoidCatchingGenericException", "checkstyle:IllegalCatch" })
     public void onEnable() {
-        configFile = new File(getDataFolder(), "config.yml");
+        final File configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             if (configFile.getParentFile().mkdirs()) {
                 utilities.copy("config.yml", configFile);
@@ -98,7 +111,7 @@ public class ImmortalLogin extends JavaPlugin {
 
         utilities.loadConfig();
 
-        localizationFile = new File(getDataFolder(), "localization.yml");
+        final File localizationFile = new File(getDataFolder(), "localization.yml");
         if (!localizationFile.exists()) {
             utilities.copy("localization.yml", localizationFile);
         }
@@ -109,8 +122,8 @@ public class ImmortalLogin extends JavaPlugin {
         utilities.checkForUpdate(RESOURCE_ID);
         utilities.trackMetrics();
 
-        PluginManager pluginManager = getServer().getPluginManager();
-        ImmortalLoginListener eventListener = new ImmortalLoginListener(this, utilities);
+        final PluginManager pluginManager = getServer().getPluginManager();
+        final ImmortalLoginListener eventListener = new ImmortalLoginListener(this, utilities);
         pluginManager.registerEvents(eventListener, this);
 
         getCommand("immortallogin").setExecutor(new ImmortalLoginCommands(this, utilities));
@@ -118,7 +131,7 @@ public class ImmortalLogin extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("NickNamer") != null) {
             try {
                 setNickManager(NickNamerAPI.getNickManager());
-            } catch (@SuppressWarnings("unused") Exception e) {
+            } catch (@SuppressWarnings("unused") final Exception e) {
                 getLogger().severe("Unable to load NickNamer!");
             }
         }
@@ -126,6 +139,12 @@ public class ImmortalLogin extends JavaPlugin {
         registerConfirmationCleanupTask();
     }
 
+    /**
+     * Enables the god mode for a player.
+     *
+     * @param player the player
+     */
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public void setGod(final Player player) {
         utilities.setMaxHealth(player);
         getGods().add(player.getUniqueId());
@@ -137,56 +156,66 @@ public class ImmortalLogin extends JavaPlugin {
             getNickManager().setSkin(player.getUniqueId(), player.getName());
         }
         final ImmortaLoginUtilities utilz = utilities;
-        final Object _nickManager = getNickManager();
-        int ungodTaskID = getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
+        final int ungodTaskID = getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
             if (getGods().contains(player.getUniqueId())) {
                 utilz.message(player, "ungod");
                 getGods().remove(player.getUniqueId());
                 getServer().getScheduler().cancelTask(getTimerTaskIDs().get(player.getUniqueId()));
                 getTimerTaskIDs().remove(player.getUniqueId());
                 getUngodTaskIDs().remove(player.getUniqueId());
-                if (_nickManager != null) {
-                    ((NickManager) _nickManager).removeNick(player.getUniqueId());
-                    ((NickManager) _nickManager).removeSkin(player.getUniqueId());
+                if (getNickManager() != null) {
+                    getNickManager().removeNick(player.getUniqueId());
+                    getNickManager().removeSkin(player.getUniqueId());
                 }
             }
         }, getSeconds() * TICKS_PER_SECOND);
         getUngodTaskIDs().put(player.getUniqueId(), ungodTaskID);
     }
 
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+    @SuppressFBWarnings("SIC_INNER_SHOULD_BE_STATIC_ANON")
     private void addTimer(final Player player) {
         final int tempSubtract = seconds / 4;
-        long delay = seconds / 4 * TICKS_PER_SECOND;
+        final long delay = seconds / 4 * TICKS_PER_SECOND;
         final ImmortaLoginUtilities utilz = utilities;
         final int secondz = seconds;
-        int taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            private int i = 1;
+        final int taskID = getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            private int index = 1;
 
             @Override
             public void run() {
-                int rest = (secondz - tempSubtract * i) / 60;
+                final int rest = (secondz - tempSubtract * index) / 60;
                 if (rest == 0) {
                     return;
                 }
                 utilz.message(player, "timeLeft", "", Integer.toString(rest));
-                i++;
+                index++;
             }
         }, delay, delay);
         getTimerTaskIDs().put(player.getUniqueId(), taskID);
     }
 
+    @SuppressWarnings("checkstyle:Indentation")
     private void registerConfirmationCleanupTask() {
         if (isConfirmation()) {
-            long delay = getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND;
+            final long delay = getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND;
             confirmationCleanupTask = getServer().getScheduler().runTaskTimerAsynchronously(this,
                     () -> getPendingConfirmationList().clear(), delay, delay);
         }
     }
 
+    /**
+     * Returns this plugin instance.
+     *
+     * @return this instance
+     */
     public ImmortalLogin getPlugin() {
         return this;
     }
 
+    /**
+     * Disables this plugin.
+     */
     public void disable() {
         this.setEnabled(false);
     }

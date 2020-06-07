@@ -7,9 +7,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 
 /**
@@ -19,28 +21,41 @@ import lombok.Getter;
  * @author xGhOsTkiLLeRx
  */
 
+@SuppressFBWarnings("IMC_IMMATURE_CLASS_NO_TOSTRING")
 public class Updater {
-    private JavaPlugin plugin;
     private static final String REQUEST_METHOD = "GET";
-    private final String RESOURCE_ID;
     private static final String HOST = "https://api.spigotmc.org";
     private static final String PATH = "/legacy/update.php";
+    private final JavaPlugin plugin;
 
     @Getter
     private String version;
-    private String oldVersion;
+    private final String oldVersion;
 
     @Getter
     private Updater.UpdateResult result = Updater.UpdateResult.DISABLED;
 
     private HttpURLConnection connection;
 
+    /**
+     * The possible updater results.
+     *
+     * @author timbru31
+     */
     public enum UpdateResult {
         NO_UPDATE, DISABLED, FAIL_SPIGOT, FAIL_NOVERSION, BAD_API_KEY, BAD_RESOURCEID, UPDATE_AVAILABLE, SNAPSHOT_DISABLED
     }
 
-    public Updater(JavaPlugin plugin, Integer resourceId, boolean disabled) {
-        RESOURCE_ID = Integer.toString(resourceId);
+    /**
+     * New Updater instance that checks Spigot's API for a newer version.
+     *
+     * @param plugin The plugin instanced used for a version check and logging
+     * @param resourceId The Spigot assigned resource ID
+     * @param disabled Whether the updater should be disabled and not run
+     */
+    @SuppressFBWarnings("URLCONNECTION_SSRF_FD")
+    @SuppressWarnings("checkstyle:ReturnCount")
+    public Updater(final JavaPlugin plugin, final Integer intResourceId, final boolean disabled) {
         this.plugin = plugin;
         oldVersion = this.plugin.getDescription().getVersion();
 
@@ -54,35 +69,34 @@ public class Updater {
             return;
         }
 
+        final String resourceId = Integer.toString(intResourceId);
         try {
-            final String query = String.format("?resource=%s", URLEncoder.encode(RESOURCE_ID, StandardCharsets.UTF_8.toString()));
+            final String query = String.format("?resource=%s", URLEncoder.encode(resourceId, StandardCharsets.UTF_8.toString()));
             connection = (HttpURLConnection) new URL(HOST + PATH + query).openConnection();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             result = UpdateResult.FAIL_SPIGOT;
-            plugin.getLogger().severe("Failed to open the connection to SpigotMC.");
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, "Failed to open the connection to SpigotMC", e);
             return;
         }
         run();
     }
 
+    @SuppressWarnings({ "checkstyle:ReturnCount", "PMD.DataflowAnomalyAnalysis" })
     private void run() {
         connection.setDoOutput(true);
         try {
             connection.setRequestMethod(REQUEST_METHOD);
-        } catch (IOException e) {
-            plugin.getLogger().severe("Failed to open the connection to SpigotMC.");
-            e.printStackTrace();
+        } catch (final IOException e) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to open the connection to SpigotMC.", e);
             result = UpdateResult.FAIL_SPIGOT;
         }
-        String newVersion;
+        final String newVersion;
         try (InputStreamReader isr = new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8);
-                BufferedReader br = new BufferedReader(isr)) {
-            newVersion = br.readLine();
-        } catch (IOException e) {
+                BufferedReader bufferedReader = new BufferedReader(isr)) {
+            newVersion = bufferedReader.readLine();
+        } catch (final IOException e) {
             result = UpdateResult.FAIL_NOVERSION;
-            plugin.getLogger().severe("Failed to read the version.");
-            e.printStackTrace();
+            plugin.getLogger().log(Level.SEVERE, "Failed to read the version.", e);
             return;
         }
         if (newVersion == null) {
@@ -103,11 +117,13 @@ public class Updater {
         versionCheck();
     }
 
+    @SuppressWarnings("checkstyle:AvoidInlineConditionals")
     private void versionCheck() {
         result = shouldUpdate(oldVersion, version) ? UpdateResult.UPDATE_AVAILABLE : UpdateResult.NO_UPDATE;
     }
 
-    public boolean shouldUpdate(String localVersion, String remoteVersion) {
+    @SuppressWarnings("static-method")
+    private boolean shouldUpdate(final String localVersion, final String remoteVersion) {
         return !localVersion.equalsIgnoreCase(remoteVersion);
     }
 }
