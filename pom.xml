@@ -19,8 +19,6 @@
     <plugin.name>ImmortalLogin</plugin.name>
     <plugin.main>de.dustplanet.immortallogin.ImmortalLogin</plugin.main>
     <plugin.package>de.dustplanet.immortallogin</plugin.package>
-    <buyer.id>%%__USER__%%</buyer.id>
-    <buyer.nonce>%%__NONCE__%%</buyer.nonce>
   </properties>
 
   <!-- Repositories -->
