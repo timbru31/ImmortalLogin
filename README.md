@@ -1,6 +1,5 @@
 # ImmortalLogin
 [![Build Status](https://ci.dustplanet.de/buildStatus/icon?job=ImmortalLogin)](https://ci.dustplanet.de/job/ImmortalLogin/)
-[![Build Status](https://travis-ci.org/timbru31/ImmortalLogin.svg?branch=master)](https://travis-ci.org/timbru31/ImmortalLogin)
 [![Build the plugin](https://github.com/timbru31/ImmortalLogin/workflows/Build%20the%20plugin/badge.svg)](https://github.com/timbru31/ImmortalLogin/actions?query=workflow%3A%22Build+the+plugin%22)
 [![Known Vulnerabilities](https://snyk.io/test/github/timbru31/immortallogin/badge.svg?targetFile=pom.xml)](https://snyk.io/test/github/timbru31/immortallogin?targetFile=pom.xml)
 
