@@ -74,7 +74,7 @@ public class ImmortalLoginListener implements Listener {
     @EventHandler
     @SuppressWarnings({ "checkstyle:MissingJavadocMethod", "checkstyle:ReturnCount", "checkstyle:NestedIfDepth" })
     public void onEntityDamageByEntity(final EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player) && !(event.getDamager() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) {
             return;
         }
 
