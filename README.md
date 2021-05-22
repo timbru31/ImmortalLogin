@@ -10,7 +10,7 @@
 
 ## Info
 This CraftBukkit/Spigot plugin adds a temporary god mode for new players.  
-Per default the players are invulnerable for 20 minutes, unless the do not attack other players.  
+Per default the players are invulnerable for 20 minutes, unless they attack other players.  
 After a certain amount of hits against other players or anytime sooner by issuing /im the god mode will be disabled.
 
 *Third party features, all of them can be disabled*
