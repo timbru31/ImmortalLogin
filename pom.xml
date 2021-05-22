@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>ImmortalLogin</artifactId>
-  <version>3.0.8-SNAPSHOT</version>
+  <version>3.0.8</version>
   <name>ImmortalLogin</name>
   <description>A temporary god mode for new players</description>
   <url>https://www.spigotmc.org/resources/25481/</url>
@@ -89,6 +89,6 @@
     <url>https://github.com/timbru31/ImmortalLogin</url>
     <connection>scm:git:git://github.com/timbru31/ImmortalLogin.git</connection>
     <developerConnection>scm:git:git@github.com:timbru31/ImmortalLogin.git</developerConnection>
-    <tag>master</tag>
+    <tag>ImmortalLogin-3.0.8</tag>
   </scm>
 </project>
