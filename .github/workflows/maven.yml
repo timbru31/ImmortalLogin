@@ -1,6 +1,10 @@
 name: Build the plugin
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
   build:
@@ -8,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        java: [8, 11, 16]
+        java: [8, 11, 17]
 
     steps:
     - uses: actions/checkout@v3
