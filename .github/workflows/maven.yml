@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        java: [8, 11, 17]
+        java: [17, 20]
 
     steps:
     - uses: actions/checkout@v3
@@ -28,4 +28,4 @@ jobs:
         mvn --version
 
     - name: Build with Maven
-      run: mvn -D"http.keepAlive=false" -D"maven.wagon.http.pool=false" -D"maven.wagon.httpconnectionManager.ttlSeconds=120" -DskipTests=true -B -V clean package
+      run: mvn -Pmetrics-no-updater -D"http.keepAlive=false" -D"maven.wagon.http.pool=false" -D"maven.wagon.httpconnectionManager.ttlSeconds=120" -DskipTests=true -B -V clean package
