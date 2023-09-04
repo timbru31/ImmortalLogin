@@ -2,12 +2,14 @@ package de.dustplanet.immortallogin.listeners;
 
 import java.util.UUID;
 
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -39,10 +41,6 @@ public class ImmortalLoginListener implements Listener {
         final Player player = event.getPlayer();
         if (!player.hasPlayedBefore()) {
             plugin.setGod(player);
-            final ImmortaLoginUtilities utilz = utilities;
-            final ImmortalLogin instance = plugin;
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin,
-                    () -> utilz.message(player, "god", "", Integer.toString(instance.getMinutes())), 2 * ImmortalLogin.TICKS_PER_SECOND);
         }
     }
 
@@ -64,7 +62,7 @@ public class ImmortalLoginListener implements Listener {
         }
         final Player player = (Player) event.getEntity();
         if (plugin.getGods().contains(player.getUniqueId())) {
-            utilities.setMaxHealth(player);
+            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             player.setRemainingAir(player.getMaximumAir());
             player.setFireTicks(-1);
             event.setCancelled(true);
@@ -85,14 +83,7 @@ public class ImmortalLoginListener implements Listener {
             if (plugin.getAggros().containsKey(damager.getUniqueId())) {
                 final int hits = plugin.getAggros().get(damager.getUniqueId()) + 1;
                 if (hits >= plugin.getHits()) {
-                    plugin.getGods().remove(damager.getUniqueId());
-                    plugin.getAggros().remove(damager.getUniqueId());
-                    plugin.getServer().getScheduler().cancelTask(plugin.getTimerTaskIDs().get(damager.getUniqueId()));
-                    plugin.getTimerTaskIDs().remove(damager.getUniqueId());
-                    plugin.getServer().getScheduler().cancelTask(plugin.getUngodTaskIDs().get(damager.getUniqueId()));
-                    plugin.getUngodTaskIDs().remove(damager.getUniqueId());
-                    utilities.message(damager, "ungod");
-                    removeNick(damager);
+                    plugin.setUnGod(damager);
                     return;
                 }
                 final int hitsLeft = plugin.getHits() - hits;
@@ -107,13 +98,6 @@ public class ImmortalLoginListener implements Listener {
         } else if (plugin.getGods().contains(target.getUniqueId())) {
             utilities.message(damager, "targetInGodMode", target.getName(), Integer.toString(plugin.getMinutes()));
             event.setCancelled(true);
-        }
-    }
-
-    private void removeNick(final Player damager) {
-        if (plugin.getNickManager() != null) {
-            plugin.getNickManager().removeNick(damager.getUniqueId());
-            plugin.getNickManager().removeSkin(damager.getUniqueId());
         }
     }
 
@@ -133,6 +117,18 @@ public class ImmortalLoginListener implements Listener {
                 utilities.message(player, "commandNotAllowed");
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public void onEntityTargetLivingEntity(final EntityTargetLivingEntityEvent event) {
+        if (!(event.getTarget() instanceof Player)) {
+            return;
+        }
+        final Player player = (Player) event.getTarget();
+        if (plugin.getGods().contains(player.getUniqueId())) {
+            event.setCancelled(true);
         }
     }
 }

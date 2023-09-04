@@ -18,7 +18,7 @@ import lombok.Getter;
  * Based on the Updater of PatoTheBest. Thanks for sharing this class.
  *
  * @author PatoTheBest
- * @author xGhOsTkiLLeRx
+ * @author timbru31
  */
 
 @SuppressFBWarnings("IMC_IMMATURE_CLASS_NO_TOSTRING")

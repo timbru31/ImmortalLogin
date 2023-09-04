@@ -10,7 +10,6 @@ import java.util.logging.Level;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.ChatColor;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -137,6 +136,11 @@ public class ImmortaLoginUtilities {
         localization.addDefault("commandNotAllowed", "&5[ImmortalLogin] &4This command is not allowed in god mode!");
         localization.addDefault("confirmationPending",
                 "&5[ImmortalLogin] &4Are you sure? &ePlease type /im again, to leave the god mode early.");
+        localization.addDefault("playerNotFound", "&5[ImmortalLogin] &4The player was not found.");
+        localization.addDefault("playerAlreadyGod", "&5[ImmortalLogin] &4The player is already in god mode!");
+        localization.addDefault("playerAddedGod", "&5[ImmortalLogin] &2The player was added to god mode.");
+        localization.addDefault("playerNotGod", "&5[ImmortalLogin] &4The player is not in god mode!");
+        localization.addDefault("playerRemovedGod", "&5[ImmortalLogin] &2The player was removed from god mode.");
         localization.options().copyDefaults(true);
         saveLocalization(localization, localizationFile);
     }
@@ -199,20 +203,15 @@ public class ImmortaLoginUtilities {
     }
 
     /**
-     * A multi version compatible method to set the max health of a player.
+     * Removes a colored nick name from a player.
      *
-     * @param player the player
+     * @param player the player to remove the nick from
      */
-    @SuppressWarnings({ "deprecation", "static-method", "PMD.UnnecessaryAnnotationValueElement" })
-    @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
-    public void setMaxHealth(final Player player) {
-        if (player == null) {
-            return;
-        }
-        try {
-            player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-        } catch (@SuppressWarnings("unused") final NoClassDefFoundError e) {
-            player.setHealth(player.getMaxHealth());
+    public void removeNick(final Player player) {
+        if (plugin.getNickManager() != null) {
+            plugin.getNickManager().removeNick(player.getUniqueId());
+            plugin.getNickManager().removeSkin(player.getUniqueId());
         }
     }
+
 }

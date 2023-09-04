@@ -15,7 +15,11 @@ permissions:
     description: Gives access to all ImmortalLogin permissions
     children:
       immortallogin.list.gods: true
+      immortallogin.admin.gods: true
   immortallogin.list.gods:
     description: Allows you to see the list of players in god mode
+    default: op
+  immortallogin.admin.gods:
+    description: Allows you to alter the god mode list of players
     default: op
 softdepend: [NickNamer]

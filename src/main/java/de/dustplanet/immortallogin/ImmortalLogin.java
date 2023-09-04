@@ -8,7 +8,10 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,7 +22,6 @@ import org.inventivetalent.nicknamer.api.NickNamerAPI;
 import de.dustplanet.immortallogin.commands.ImmortalLoginCommands;
 import de.dustplanet.immortallogin.listeners.ImmortalLoginListener;
 import de.dustplanet.immortallogin.utils.ImmortaLoginUtilities;
-import de.dustplanet.immortallogin.utils.ScalarYamlConfiguration;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 import lombok.Setter;
@@ -99,7 +101,7 @@ public class ImmortalLogin extends JavaPlugin {
     public void onEnable() {
         final File configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {
-            if (configFile.getParentFile().mkdirs()) {
+            if (getDataFolder().exists() || getDataFolder().mkdirs()) {
                 utilities.copy("config.yml", configFile);
             } else {
                 getLogger().severe("The config folder could NOT be created, make sure it's writable!");
@@ -116,7 +118,7 @@ public class ImmortalLogin extends JavaPlugin {
             utilities.copy("localization.yml", localizationFile);
         }
 
-        setLocalization(ScalarYamlConfiguration.loadConfiguration(localizationFile));
+        setLocalization(YamlConfiguration.loadConfiguration(localizationFile));
         utilities.loadLocalization(getLocalization(), localizationFile);
 
         utilities.checkForUpdate(RESOURCE_ID);
@@ -126,7 +128,10 @@ public class ImmortalLogin extends JavaPlugin {
         final ImmortalLoginListener eventListener = new ImmortalLoginListener(this, utilities);
         pluginManager.registerEvents(eventListener, this);
 
-        getCommand("immortallogin").setExecutor(new ImmortalLoginCommands(this, utilities));
+        final PluginCommand command = getCommand("immortallogin");
+        if (command != null) {
+            command.setExecutor(new ImmortalLoginCommands(this, utilities));
+        }
 
         if (getServer().getPluginManager().getPlugin("NickNamer") != null) {
             try {
@@ -146,7 +151,7 @@ public class ImmortalLogin extends JavaPlugin {
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public void setGod(final Player player) {
-        utilities.setMaxHealth(player);
+        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
         getGods().add(player.getUniqueId());
         addTimer(player);
 
@@ -170,6 +175,26 @@ public class ImmortalLogin extends JavaPlugin {
             }
         }, getSeconds() * TICKS_PER_SECOND);
         getUngodTaskIDs().put(player.getUniqueId(), ungodTaskID);
+
+        final ImmortalLogin instance = this;
+        getServer().getScheduler().scheduleSyncDelayedTask(this,
+                () -> utilz.message(player, "god", "", Integer.toString(instance.getMinutes())), 2 * ImmortalLogin.TICKS_PER_SECOND);
+    }
+
+    /**
+     * Disables god mode for a player.
+     *
+     * @param player the player
+     */
+    public void setUnGod(final Player player) {
+        getGods().remove(player.getUniqueId());
+        getAggros().remove(player.getUniqueId());
+        getServer().getScheduler().cancelTask(getTimerTaskIDs().get(player.getUniqueId()));
+        getTimerTaskIDs().remove(player.getUniqueId());
+        getServer().getScheduler().cancelTask(getUngodTaskIDs().get(player.getUniqueId()));
+        getUngodTaskIDs().remove(player.getUniqueId());
+        utilities.message(player, "ungod");
+        utilities.removeNick(player);
     }
 
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")

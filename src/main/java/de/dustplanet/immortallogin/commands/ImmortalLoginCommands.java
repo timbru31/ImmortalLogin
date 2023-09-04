@@ -44,11 +44,47 @@ public class ImmortalLoginCommands implements CommandExecutor {
                     utilities.message(sender, "unknownCommand");
                 }
                 break;
+            case 2:
+                if ("add".equalsIgnoreCase(args[0]) || "remove".equalsIgnoreCase(args[0])) {
+                    handleGodMode(sender, args);
+                } else {
+                    utilities.message(sender, "unknownCommand");
+                }
+                break;
             default:
                 utilities.message(sender, "unknownCommand");
                 break;
         }
         return true;
+    }
+
+    private void handleGodMode(final CommandSender sender, final String[] args) {
+        if (sender.hasPermission("immortallogin.admin.gods")) {
+            final String playerName = args[1];
+            final Player player = plugin.getServer().getPlayer(playerName);
+            if (player == null) {
+                utilities.message(sender, "playerNotFound");
+                return;
+            }
+            final String mode = args[0];
+            if ("add".equalsIgnoreCase(mode)) {
+                if (plugin.getGods().contains(player.getUniqueId())) {
+                    utilities.message(sender, "playerAlreadyGod");
+                } else {
+                    plugin.setGod(player);
+                    utilities.message(sender, "playerAddedGod");
+                }
+            } else {
+                if (!plugin.getGods().contains(player.getUniqueId())) {
+                    utilities.message(sender, "playerNotGod");
+                } else {
+                    plugin.setUnGod(player);
+                    utilities.message(sender, "playerRemovedGod");
+                }
+            }
+        } else {
+            utilities.message(sender, "noPermission");
+        }
     }
 
     @SuppressWarnings("checkstyle:ReturnCount")
