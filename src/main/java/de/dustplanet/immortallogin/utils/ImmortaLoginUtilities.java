@@ -87,7 +87,7 @@ public class ImmortaLoginUtilities {
         config.addDefault("confirmation.delay", 30);
         config.addDefault("nickColor", "DARK_PURPLE");
         config.addDefault("commandListEnabled", Boolean.TRUE);
-        config.addDefault("commandListBlacklist", Boolean.FALSE);
+        config.addDefault("commandListDenylist", Boolean.FALSE);
         config.addDefault("commandList", Arrays.asList(commands));
         config.options().copyDefaults(true);
         plugin.saveConfig();
@@ -99,7 +99,7 @@ public class ImmortaLoginUtilities {
         plugin.setHits(hits);
         plugin.setMinutes((int) Math.round(minutes));
 
-        plugin.setCommandBlackList(config.getBoolean("commandListBlacklist", true));
+        plugin.setCommandDenyList(config.getBoolean("commandListDenylist", true));
         plugin.setCommandListEnabled(config.getBoolean("commandListEnabled", true));
         plugin.setCommandList(config.getStringList("commandList"));
         plugin.setConfirmation(config.getBoolean("confirmation.enabled"));

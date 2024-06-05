@@ -65,7 +65,7 @@ public class ImmortalLogin extends JavaPlugin {
     private List<String> commandList = new ArrayList<>();
     @Getter
     @Setter
-    private boolean commandBlackList = true;
+    private boolean commandDenyList = true;
     @Getter
     @Setter
     private boolean commandListEnabled = true;

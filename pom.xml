@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>ImmortalLogin</artifactId>
-  <version>4.0.1-SNAPSHOT</version>
+  <version>5.0.0-SNAPSHOT</version>
   <name>ImmortalLogin</name>
   <description>A temporary god mode for new players</description>
   <url>https://www.spigotmc.org/resources/25481/</url>

@@ -30,8 +30,8 @@ confirmation:
   delay: 30
 nickColor: "DARK_PURPLE"
 commandListEnabled: true
-# Toggle between a black and a whitelist (false means whitelist)
-commandListBlacklist: false
+# Toggle between a deny and a allow list (false means allowlist)
+commandListDenylist: false
 commandList:
   - immortallogin
   - immortal

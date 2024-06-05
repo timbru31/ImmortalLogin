@@ -112,8 +112,8 @@ public class ImmortalLoginListener implements Listener {
             if (command.contains(" ")) {
                 command = command.substring(0, command.indexOf(' '));
             }
-            if (plugin.isCommandBlackList() && plugin.getCommandList().contains(command)
-                    || !plugin.isCommandBlackList() && !plugin.getCommandList().contains(command)) {
+            if (plugin.isCommandDenyList() && plugin.getCommandList().contains(command)
+                    || !plugin.isCommandDenyList() && !plugin.getCommandList().contains(command)) {
                 utilities.message(player, "commandNotAllowed");
                 event.setCancelled(true);
             }
